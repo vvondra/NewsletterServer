@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using System.Data.Objects;
 
 namespace NewsletterServer
 {
@@ -13,6 +14,9 @@ namespace NewsletterServer
     /// </summary>
     public class NewsletterService : IAuthService, ISubscriberService, IMessageService
     {
+
+        Dictionary<string, int> Users = new Dictionary<string, int>();
+
         static void Main(string[] args)
         {
             CreateMappings();
@@ -34,7 +38,37 @@ namespace NewsletterServer
         /// <inheritdoc />
         public string GetAuthKey(string username, string password)
         {
-            throw new NotImplementedException();
+            try {
+                using (var context = new NewsletterEntities()) {
+                    var newsletter = new ObjectParameter("ret", typeof(Int32));
+                    context.GetUserNewsletter(username, password, newsletter);
+                    var newsletterId = Int32.Parse(newsletter.Value.ToString());
+                    if (newsletterId > 0) {
+                        string key = GenerateAuthKey();
+                        Users.Add(key, newsletterId);
+                        
+                        return key;
+                    }
+
+                    return String.Empty;
+                }
+            } catch (Exception e) {
+                return String.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Generates a unique authentication key
+        /// </summary>
+        /// <returns>authentication key</returns>
+        string GenerateAuthKey()
+        {
+            Guid g = Guid.NewGuid();
+            string GuidString = Convert.ToBase64String(g.ToByteArray());
+            GuidString = GuidString.Replace("=", "");
+            GuidString = GuidString.Replace("+", "");
+
+            return GuidString;
         }
 
         /// <inheritdoc />
