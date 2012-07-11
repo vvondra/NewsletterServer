@@ -9,6 +9,7 @@
           <EntitySet Name="Messages" EntityType="NewsletterModel.Store.Messages" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Newsletters" EntityType="NewsletterModel.Store.Newsletters" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Subscribers" EntityType="NewsletterModel.Store.Subscribers" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="sysdiagrams" EntityType="NewsletterModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Users" EntityType="NewsletterModel.Store.Users" store:Type="Tables" Schema="dbo" />
           <AssociationSet Name="FK_Messages_Newsletters" Association="NewsletterModel.Store.FK_Messages_Newsletters">
             <End Role="Newsletters" EntitySet="Newsletters" />
@@ -49,6 +50,16 @@
           <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="255" />
           <Property Name="contact" Type="nvarchar" Nullable="false" MaxLength="255" />
           <Property Name="newsletter" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
