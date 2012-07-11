@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="NewsletterModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="NewsletterModelStoreContainer">
+          <EntitySet Name="Messages" EntityType="NewsletterModel.Store.Messages" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Newsletters" EntityType="NewsletterModel.Store.Newsletters" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Subscribers" EntityType="NewsletterModel.Store.Subscribers" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Users" EntityType="NewsletterModel.Store.Users" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Messages_Newsletters" Association="NewsletterModel.Store.FK_Messages_Newsletters">
+            <End Role="Newsletters" EntitySet="Newsletters" />
+            <End Role="Messages" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subscribers_Newsletters" Association="NewsletterModel.Store.FK_Subscribers_Newsletters">
+            <End Role="Newsletters" EntitySet="Newsletters" />
+            <End Role="Subscribers" EntitySet="Subscribers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Newsletters" Association="NewsletterModel.Store.FK_Users_Newsletters">
+            <End Role="Newsletters" EntitySet="Newsletters" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Messages">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="date" Type="date" Nullable="false" />
+          <Property Name="newsletter" Type="int" Nullable="false" />
+          <Property Name="subject" Type="nvarchar" Nullable="false" MaxLength="120" />
+          <Property Name="text" Type="ntext" Nullable="false" />
+          <Property Name="clean_text" Type="ntext" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Newsletters">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Subscribers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="contact" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="newsletter" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="username" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="password" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="newsletter" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Messages_Newsletters">
+          <End Role="Newsletters" Type="NewsletterModel.Store.Newsletters" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Messages" Type="NewsletterModel.Store.Messages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Newsletters">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Messages">
+              <PropertyRef Name="newsletter" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subscribers_Newsletters">
+          <End Role="Newsletters" Type="NewsletterModel.Store.Newsletters" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Subscribers" Type="NewsletterModel.Store.Subscribers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Newsletters">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Subscribers">
+              <PropertyRef Name="newsletter" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Newsletters">
+          <End Role="Newsletters" Type="NewsletterModel.Store.Newsletters" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Users" Type="NewsletterModel.Store.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Newsletters">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="newsletter" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="NewsletterModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="NewsletterEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Messages" EntityType="NewsletterModel.Message" />
+          <EntitySet Name="Newsletters" EntityType="NewsletterModel.Newsletter" />
+          <EntitySet Name="Subscribers" EntityType="NewsletterModel.Subscriber" />
+          <AssociationSet Name="FK_Subscribers_Newsletters" Association="NewsletterModel.FK_Subscribers_Newsletters">
+            <End Role="Newsletters" EntitySet="Newsletters" />
+            <End Role="Subscribers" EntitySet="Subscribers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Messages_Newsletters" Association="NewsletterModel.FK_Messages_Newsletters">
+            <End Role="Newsletter" EntitySet="Newsletters" />
+            <End Role="Message" EntitySet="Messages" />
+          </AssociationSet>
+          <EntitySet Name="Users" EntityType="NewsletterModel.Users" />
+          <AssociationSet Name="FK_Users_Newsletters" Association="NewsletterModel.FK_Users_Newsletters">
+            <End Role="Newsletter" EntitySet="Newsletters" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="date" Type="DateTime" Nullable="false" />
+          <Property Name="newsletter" Type="Int32" Nullable="false" />
+          <Property Name="subject" Type="String" Nullable="false" MaxLength="120" Unicode="true" FixedLength="false" />
+          <Property Name="text" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="clean_text" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Newsletters" Relationship="NewsletterModel.FK_Messages_Newsletters" FromRole="Message" ToRole="Newsletter" />
+        </EntityType>
+        <EntityType Name="Newsletter">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Subscribers" Relationship="NewsletterModel.FK_Subscribers_Newsletters" FromRole="Newsletters" ToRole="Subscribers" />
+          <NavigationProperty Name="Messages" Relationship="NewsletterModel.FK_Messages_Newsletters" FromRole="Newsletter" ToRole="Message" />
+          <NavigationProperty Name="Users" Relationship="NewsletterModel.FK_Users_Newsletters" FromRole="Newsletter" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Subscriber">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="contact" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="newsletter" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Newsletter1" Relationship="NewsletterModel.FK_Subscribers_Newsletters" FromRole="Subscribers" ToRole="Newsletters" />
+          </EntityType>
+        <Association Name="FK_Subscribers_Newsletters">
+          <End Role="Newsletters" Type="NewsletterModel.Newsletter" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Subscribers" Type="NewsletterModel.Subscriber" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Newsletters">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Subscribers">
+              <PropertyRef Name="newsletter" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Messages_Newsletters">
+          <End Type="NewsletterModel.Newsletter" Role="Newsletter" Multiplicity="1" />
+          <End Type="NewsletterModel.Message" Role="Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Newsletter">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Message">
+              <PropertyRef Name="newsletter" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="username" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="password" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="newsletter" Nullable="false" />
+          <NavigationProperty Name="Newsletters" Relationship="NewsletterModel.FK_Users_Newsletters" FromRole="Users" ToRole="Newsletter" />
+        </EntityType>
+        <Association Name="FK_Users_Newsletters">
+          <End Type="NewsletterModel.Newsletter" Role="Newsletter" Multiplicity="1" />
+          <End Type="NewsletterModel.Users" Role="Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Newsletter">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="newsletter" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="NewsletterModelStoreContainer" CdmEntityContainer="NewsletterEntities">
+          <EntitySetMapping Name="Messages"><EntityTypeMapping TypeName="NewsletterModel.Message"><MappingFragment StoreEntitySet="Messages">
+            <ScalarProperty Name="id" ColumnName="id" />
+            <ScalarProperty Name="date" ColumnName="date" />
+            <ScalarProperty Name="newsletter" ColumnName="newsletter" />
+            <ScalarProperty Name="subject" ColumnName="subject" />
+            <ScalarProperty Name="text" ColumnName="text" />
+            <ScalarProperty Name="clean_text" ColumnName="clean_text" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Newsletters"><EntityTypeMapping TypeName="NewsletterModel.Newsletter"><MappingFragment StoreEntitySet="Newsletters">
+            <ScalarProperty Name="id" ColumnName="id" />
+            <ScalarProperty Name="name" ColumnName="name" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Subscribers"><EntityTypeMapping TypeName="NewsletterModel.Subscriber"><MappingFragment StoreEntitySet="Subscribers">
+            <ScalarProperty Name="id" ColumnName="id" />
+            <ScalarProperty Name="name" ColumnName="name" />
+            <ScalarProperty Name="contact" ColumnName="contact" />
+            <ScalarProperty Name="newsletter" ColumnName="newsletter" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="NewsletterModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="newsletter" ColumnName="newsletter" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="Model1">
+        <EntityTypeShape EntityType="NewsletterModel.Message" Width="1.5" PointX="0.75" PointY="3.75" Height="2.3648893229166665" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewsletterModel.Newsletter" Width="1.5" PointX="0.75" PointY="1.125" Height="1.5956835937499996" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewsletterModel.Subscriber" Width="1.5" PointX="3" PointY="0.875" Height="1.9802864583333335" IsExpanded="true" />
+        <AssociationConnector Association="NewsletterModel.FK_Subscribers_Newsletters" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="2.1151432291666667" />
+          <ConnectorPoint PointX="3" PointY="2.1151432291666667" />
+        </AssociationConnector>
+        <AssociationConnector Association="NewsletterModel.FK_Messages_Newsletters" >
+          <ConnectorPoint PointX="1.5" PointY="3.1052864583333331" />
+          <ConnectorPoint PointX="1.5" PointY="3.75" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="NewsletterModel.Users" Width="1.5" PointX="4.125" PointY="4" Height="1.9802864583333335" />
+        <AssociationConnector Association="NewsletterModel.FK_Users_Newsletters" >
+          <ConnectorPoint PointX="2.2499999999999996" PointY="3.1052864583333331" />
+          <ConnectorPoint PointX="2.625" PointY="3.4802864583333335" />
+          <ConnectorPoint PointX="2.625" PointY="4.9901432291666667" />
+          <ConnectorPoint PointX="4.125" PointY="4.9901432291666667" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

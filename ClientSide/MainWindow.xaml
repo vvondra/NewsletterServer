@@ -1,0 +1,34 @@
+﻿<Controls:MetroWindow x:Class="ClientSide.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        Title="MainWindow" Loaded="Window_Loaded" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DesignHeight="381" d:DesignWidth="754" SizeToContent="WidthAndHeight">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <Grid>
+        <TabControl SelectionChanged="MainMenu_SelectionChanged">
+            <TabItem x:Name="TabOverview" Header="overview">
+                The Cheese Tab
+            </TabItem>
+            <TabItem x:Name="TabCompose" Header="compose">
+            </TabItem>
+            <TabItem x:Name="TabSubscibers" Header="subscribers">
+                <DataGrid ItemsSource="{Binding Subscribers}">
+                </DataGrid>
+            </TabItem>
+            <TabItem x:Name="TabSettings" Header="settings">
+                The Mushrooms Tab
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Controls:MetroWindow>
