@@ -27,7 +27,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="date" Type="date" Nullable="false" />
           <Property Name="newsletter" Type="int" Nullable="false" />
           <Property Name="subject" Type="nvarchar" Nullable="false" MaxLength="120" />
@@ -54,7 +54,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="username" Type="nvarchar" Nullable="false" MaxLength="255" />
           <Property Name="password" Type="varchar" Nullable="false" MaxLength="255" />
           <Property Name="newsletter" Type="int" Nullable="false" />
@@ -282,10 +282,9 @@
         </AssociationConnector>
         <EntityTypeShape EntityType="NewsletterModel.Users" Width="1.5" PointX="4.125" PointY="4" Height="1.9802864583333335" />
         <AssociationConnector Association="NewsletterModel.FK_Users_Newsletters" >
-          <ConnectorPoint PointX="2.2499999999999996" PointY="3.1052864583333331" />
-          <ConnectorPoint PointX="2.625" PointY="3.4802864583333335" />
-          <ConnectorPoint PointX="2.625" PointY="4.9901432291666667" />
-          <ConnectorPoint PointX="4.125" PointY="4.9901432291666667" />
+          <ConnectorPoint PointX="2.25" PointY="3.0115364583333335" />
+          <ConnectorPoint PointX="4.9375" PointY="3.0115364583333335" />
+          <ConnectorPoint PointX="4.9375" PointY="4" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>
