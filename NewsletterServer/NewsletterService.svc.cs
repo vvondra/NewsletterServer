@@ -15,7 +15,7 @@ namespace NewsletterServer
     {
         static void Main(string[] args)
         {
-            
+            CreateMappings();
         }
 
         /// <summary>
