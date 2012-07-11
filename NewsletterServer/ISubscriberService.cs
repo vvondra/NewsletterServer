@@ -14,17 +14,14 @@ namespace NewsletterServer
     [ServiceContract]
     interface ISubscriberService
     {
-        [OperationContract]
-        DataTransferObject.Subscriber[] GetSubscribers(int value, string authKey);
 
         /// <summary>
-        /// Queues message in the sending queue common for all newsletters
+        /// Returns an array of subscribers for newsletter logged in with current auth key
         /// </summary>
-        /// <param name="subject">Subject of the message</param>
-        /// <param name="body">Content of the message (with HTML or other markup)</param>
-        /// <param name="clean_body">Content of the message without any markup</param>
-        /// <returns>Return true when queueing was successful</returns>
+        /// <param name="value"></param>
+        /// <param name="authKey">Authentication key provide by authentication serivce <see cref="IAuthService.GetAuthKey"/></param>
+        /// <returns></returns>
         [OperationContract]
-        bool QueueMessage(int subject, int body, int clean_body);
+        DataTransferObject.Subscriber[] GetSubscribers(string authKey);
     }
 }

@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataTransferObject\Subscriber.cs" />
+    <Compile Include="IMessageService.cs" />
     <Compile Include="ISubscriberService.cs" />
     <Compile Include="NewsletterModel.Designer.cs">
       <AutoGen>True</AutoGen>

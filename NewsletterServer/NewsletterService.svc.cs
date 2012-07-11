@@ -11,7 +11,7 @@ namespace NewsletterServer
     /// <summary>
     /// Service providing all communication with newsletter service
     /// </summary>
-    public class NewsletterService : IAuthService, ISubscriberService
+    public class NewsletterService : IAuthService, ISubscriberService, IMessageService
     {
         static void Main(string[] args)
         {
@@ -26,6 +26,11 @@ namespace NewsletterServer
             AutoMapper.Mapper.CreateMap<Subscriber, DataTransferObject.Subscriber>();
         }
 
+        bool IsValidKey(string authKey)
+        {
+            return true;
+        }
+
         /// <inheritdoc />
         public string GetAuthKey(string username, string password)
         {
@@ -33,13 +38,17 @@ namespace NewsletterServer
         }
 
         /// <inheritdoc />
-        public DataTransferObject.Subscriber[] GetSubscribers(int value, string authKey)
+        public DataTransferObject.Subscriber[] GetSubscribers(string authKey)
         {
-            throw new NotImplementedException();
+            if (IsValidKey(authKey)) {
+
+            }
+
+            return null;
         }
 
         /// <inheritdoc />
-        public bool QueueMessage(int subject, int body, int clean_body)
+        public bool QueueMessage(int subject, int body, int clean_body, string authKey)
         {
             throw new NotImplementedException();
         }
