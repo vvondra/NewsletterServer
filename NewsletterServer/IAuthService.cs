@@ -13,6 +13,7 @@ namespace NewsletterServer
     {
         /// <summary>
         /// Returns auth key for subsequent requests for authorization in other newsletter services
+        /// On unsuccessful login, return an empty string
         /// </summary>
         /// <param name="username">username to authenticate with</param>
         /// <param name="password">password to authenticate with</param>
