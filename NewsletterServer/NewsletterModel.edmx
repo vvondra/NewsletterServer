@@ -101,6 +101,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="LoginUserAndGetNewsletter" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="username" Type="varchar" Mode="In" />
+          <Parameter Name="password" Type="varchar" Mode="In" />
+          <Parameter Name="ret" Type="int" Mode="InOut" />
+        </Function>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -122,6 +127,11 @@
             <End Role="Newsletter" EntitySet="Newsletters" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
+          <FunctionImport Name="GetUserNewsletter">
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+            <Parameter Name="ret" Mode="InOut" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Message">
           <Key>
@@ -237,6 +247,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetUserNewsletter" FunctionName="NewsletterModel.Store.LoginUserAndGetNewsletter" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

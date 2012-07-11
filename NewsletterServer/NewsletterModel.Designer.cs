@@ -172,6 +172,40 @@ namespace NewsletterServer
         }
 
         #endregion
+        #region Function Imports
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="username">No Metadata Documentation available.</param>
+        /// <param name="password">No Metadata Documentation available.</param>
+        /// <param name="ret">No Metadata Documentation available.</param>
+        public int GetUserNewsletter(global::System.String username, global::System.String password, ObjectParameter ret)
+        {
+            ObjectParameter usernameParameter;
+            if (username != null)
+            {
+                usernameParameter = new ObjectParameter("username", username);
+            }
+            else
+            {
+                usernameParameter = new ObjectParameter("username", typeof(global::System.String));
+            }
+    
+            ObjectParameter passwordParameter;
+            if (password != null)
+            {
+                passwordParameter = new ObjectParameter("password", password);
+            }
+            else
+            {
+                passwordParameter = new ObjectParameter("password", typeof(global::System.String));
+            }
+    
+            return base.ExecuteFunction("GetUserNewsletter", usernameParameter, passwordParameter, ret);
+        }
+
+        #endregion
     }
     
 
