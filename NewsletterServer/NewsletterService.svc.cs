@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using System.Data.Objects;
+using NewsletterServer.User;
 
 namespace NewsletterServer
 {
@@ -15,7 +16,7 @@ namespace NewsletterServer
     public class NewsletterService : IAuthService, ISubscriberService, IMessageService
     {
 
-        Dictionary<string, int> Users = new Dictionary<string, int>();
+        private SessionManager sessions = new SessionManager();
 
         static void Main(string[] args)
         {
@@ -30,11 +31,6 @@ namespace NewsletterServer
             AutoMapper.Mapper.CreateMap<Subscriber, DataTransferObject.Subscriber>();
         }
 
-        bool IsValidKey(string authKey)
-        {
-            return true;
-        }
-
         /// <inheritdoc />
         public string GetAuthKey(string username, string password)
         {
@@ -45,8 +41,7 @@ namespace NewsletterServer
                     var newsletterId = Int32.Parse(newsletter.Value.ToString());
                     if (newsletterId > 0) {
                         string key = GenerateAuthKey();
-                        Users.Add(key, newsletterId);
-                        
+                        sessions.CreateSession(username, key, newsletterId);
                         return key;
                     }
 
@@ -74,10 +69,6 @@ namespace NewsletterServer
         /// <inheritdoc />
         public DataTransferObject.Subscriber[] GetSubscribers(string authKey)
         {
-            if (IsValidKey(authKey)) {
-
-            }
-
             return null;
         }
 
