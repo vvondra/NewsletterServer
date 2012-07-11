@@ -1,15 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.ServiceModel;
 using MahApps.Metro.Controls;
 
 namespace ClientSide
@@ -26,13 +17,21 @@ namespace ClientSide
         }
 
         private void logInButton_Click(object sender, RoutedEventArgs e) {
-            if (true) {
+            var key = GetAuthenticationKey(username.Text, password.Text);
+            
+            if (key != String.Empty) {
+                MessageBox.Show(String.Format("Key is {0}", key));
                 LoginSuccessful(this, null);
                 Close();
             } else {
-                // Alert the user that login failed
+                MessageBox.Show("Invalid credentials");
             }
         }
 
+        string GetAuthenticationKey(string username, string password)
+        {
+            var client = new AuthServiceClient();
+            return client.GetAuthKey(username, password);
+        }
     }
 }
