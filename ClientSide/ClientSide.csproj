@@ -68,6 +68,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="NewsletterServerProxy.cs" />
     <Compile Include="SubcribersViewModel.cs" />
     <Page Include="LoginWindow.xaml">
       <SubType>Designer</SubType>
