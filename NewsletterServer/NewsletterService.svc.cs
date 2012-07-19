@@ -69,9 +69,7 @@ namespace NewsletterServer
                     context.GetUserNewsletter(username, password, newsletter);
                     var newsletterId = Int32.Parse(newsletter.Value.ToString());
                     if (newsletterId > 0) {
-                        string key = GenerateAuthKey();
-                        sessions.CreateSession(username, key, newsletterId);
-                        return key;
+                        return sessions.CreateSession(username, newsletterId);
                     }
 
                     return String.Empty;
@@ -114,18 +112,5 @@ namespace NewsletterServer
             return true;
         }
 
-        /// <summary>
-        /// Generates a unique authentication key
-        /// </summary>
-        /// <returns>authentication key</returns>
-        string GenerateAuthKey()
-        {
-            Guid g = Guid.NewGuid();
-            string GuidString = Convert.ToBase64String(g.ToByteArray());
-            GuidString = GuidString.Replace("=", "");
-            GuidString = GuidString.Replace("+", "");
-
-            return GuidString;
-        }
     }
 }

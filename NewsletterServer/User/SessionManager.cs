@@ -26,8 +26,10 @@ namespace NewsletterServer.User
         /// <param name="username">username</param>
         /// <param name="authKey">generated authentication key</param>
         /// <param name="newsletterId">ID of users newsletter</param>
-        internal void CreateSession(string username, string authKey, int newsletterId)
+        internal string CreateSession(string username, int newsletterId)
         {
+            var authKey = GenerateAuthKey();
+
             var session = new UserSession{
                 Username = username,
                 AuthenticationKey = authKey,
@@ -36,6 +38,8 @@ namespace NewsletterServer.User
             };
 
             Sessions.Add(authKey, session);
+
+            return authKey;
         }
 
         internal UserSession GetSession(string authKey)
@@ -76,5 +80,20 @@ namespace NewsletterServer.User
                 Sessions[authKey].TimeAuthenticated = DateTime.Now;
             }
         }
+
+        /// <summary>
+        /// Generates a unique authentication key
+        /// </summary>
+        /// <returns>authentication key</returns>
+        string GenerateAuthKey()
+        {
+            Guid g = Guid.NewGuid();
+            string GuidString = Convert.ToBase64String(g.ToByteArray());
+            GuidString = GuidString.Replace("=", "");
+            GuidString = GuidString.Replace("+", "");
+
+            return GuidString;
+        }
+
     }
 }
