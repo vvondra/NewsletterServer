@@ -5,6 +5,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientSide", "ClientSide\Cl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsletterServer", "NewsletterServer\NewsletterServer.csproj", "{F91D01B0-4AF6-4B89-AEF0-9DBA9B39C3F9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeliveryServer", "DeliveryServer\DeliveryServer.csproj", "{21D1B606-2BE5-4311-BBA2-29CD8D3588BD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F91D01B0-4AF6-4B89-AEF0-9DBA9B39C3F9} = {F91D01B0-4AF6-4B89-AEF0-9DBA9B39C3F9}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +40,16 @@ Global
 		{F91D01B0-4AF6-4B89-AEF0-9DBA9B39C3F9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F91D01B0-4AF6-4B89-AEF0-9DBA9B39C3F9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F91D01B0-4AF6-4B89-AEF0-9DBA9B39C3F9}.Release|x86.ActiveCfg = Release|Any CPU
+		{21D1B606-2BE5-4311-BBA2-29CD8D3588BD}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{21D1B606-2BE5-4311-BBA2-29CD8D3588BD}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{21D1B606-2BE5-4311-BBA2-29CD8D3588BD}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{21D1B606-2BE5-4311-BBA2-29CD8D3588BD}.Debug|x86.ActiveCfg = Debug|x86
+		{21D1B606-2BE5-4311-BBA2-29CD8D3588BD}.Debug|x86.Build.0 = Debug|x86
+		{21D1B606-2BE5-4311-BBA2-29CD8D3588BD}.Release|Any CPU.ActiveCfg = Release|x86
+		{21D1B606-2BE5-4311-BBA2-29CD8D3588BD}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{21D1B606-2BE5-4311-BBA2-29CD8D3588BD}.Release|Mixed Platforms.Build.0 = Release|x86
+		{21D1B606-2BE5-4311-BBA2-29CD8D3588BD}.Release|x86.ActiveCfg = Release|x86
+		{21D1B606-2BE5-4311-BBA2-29CD8D3588BD}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

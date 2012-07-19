@@ -22,39 +22,6 @@ namespace NewsletterServer
         private SessionManager sessions = new SessionManager();
 
         /// <summary>
-        /// Sets up application, spawns delivery thread
-        /// </summary>
-        /// <param name="args"></param>
-        static void Main(string[] args)
-        {
-            CreateMappings();
-
-            // Start sending in background
-            var deliveryThread = SpawnDeliveryAgent(
-                new TransferAgent.SmtpTransferAgent(),
-                new TransferAgent.EntityMessageProvider(new NewsletterEntities())
-            );
-        }
-
-        /// <summary>
-        /// Creates a thread that runs the delivey process
-        /// </summary>
-        /// <param name="mta">message transer agent to take care of sending</param>
-        /// <param name="provider">message provider</param>
-        /// <returns>spawned thread</returns>
-        static Thread SpawnDeliveryAgent(TransferAgent.MessageTransferAgent mta, TransferAgent.MessageProvider provider)
-        {
-            var messenger = new TransferAgent.RoundRobinMessenger(mta, provider);
-            var t = new Thread(() => messenger.Deliver());
-            t.Start();
-
-            // We do not want the delivery thread to stop the termination of the application
-            t.IsBackground = true;
-
-            return t;
-        }
-
-        /// <summary>
         /// Creates mappings from ADO entities to Data Transfer Objects
         /// Hides internal entity objects
         /// </summary>
@@ -97,6 +64,7 @@ namespace NewsletterServer
                                       select s;
 
                 var subscribers = new List<DataTransferObject.SubscriberDto>();
+                CreateMappings();
                 foreach (var subscriber in subscriberQuery) {
                     subscribers.Add(AutoMapper.Mapper.Map<Subscriber, DataTransferObject.SubscriberDto>(subscriber));
                 }
@@ -115,7 +83,7 @@ namespace NewsletterServer
             // Create a message entity and store it
             using (var context = new NewsletterEntities()) {
                 var message = new Message();
-                message.status = TransferAgent.Message.StatusWaiting;
+                message.status = 3; // TODO DeliveryServer.TransferAgent.Message.StatusWaiting;
                 message.text = body;
                 message.clean_text = clean_body;
                 message.subject = subject;

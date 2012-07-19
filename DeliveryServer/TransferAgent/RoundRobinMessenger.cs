@@ -4,8 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
+using NewsletterServer;
 
-namespace NewsletterServer.TransferAgent
+namespace DeliveryServer.TransferAgent
 {
 
     /// <summary>
@@ -59,33 +60,37 @@ namespace NewsletterServer.TransferAgent
         /// <param name="messages">List of messages to be sent</param>
         internal override void Deliver()
         {
-            var messages = provider.GetUndeliveredMessages();
-            // Deliver messages until there are none left
-            while (messages.Count > 0) {
+            while (true) {
+                var messages = provider.GetUndeliveredMessages();
+                // Deliver messages until there are none left
+                while (messages.Count > 0) {
 
-                Throttle();
-                
-                foreach (var msg in messages) {
+                    Throttle();
 
-                    // Take a fair slice of subscribers so all messages get the same
-                    var recepients = msg.GetUndeliveredSubscribers(MessagesPerBatch / messages.Count).ToList();
+                    foreach (var msg in messages) {
 
-                    // No recepients left
-                    if (recepients.Count() == 0) {
-                        // Remove message from queue
-                        messages.Remove(msg);
+                        // Take a fair slice of subscribers so all messages get the same
+                        var recepients = msg.GetUndeliveredSubscribers(MessagesPerBatch / messages.Count).ToList();
 
-                        // Call delivered event
-                        msg.MessageDelivered(this, null);
-                        continue;
+                        // No recepients left
+                        if (recepients.Count() == 0) {
+                            // Remove message from queue
+                            messages.Remove(msg);
+
+                            // Call delivered event
+                            msg.MessageDelivered(this, null);
+                            continue;
+                        }
+
+                        DeliverMessageToSubscribers(msg, recepients);
+
                     }
 
-                    DeliverMessageToSubscribers(msg, recepients);
-                    
+                    // Refresh queue
+                    messages = provider.GetUndeliveredMessages();
                 }
 
-                // Refresh queue
-                messages = provider.GetUndeliveredMessages();
+                System.Threading.Thread.Sleep(10000);
             }
         }
 

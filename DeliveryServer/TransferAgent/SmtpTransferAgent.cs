@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Net.Mail;
 
-namespace NewsletterServer.TransferAgent
+namespace DeliveryServer.TransferAgent
 {
 
     /// <summary>

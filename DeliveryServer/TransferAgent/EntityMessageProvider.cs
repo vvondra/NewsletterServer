@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data.Objects;
+using NewsletterServer;
 
-namespace NewsletterServer.TransferAgent
+namespace DeliveryServer.TransferAgent
 {
 
     /// <summary>
@@ -32,17 +33,17 @@ namespace NewsletterServer.TransferAgent
         /// Loads message from the database
         /// </summary>
         /// <returns>list of messages waiting to be sent</returns>
-        internal override List<Message> GetUndeliveredMessages()
+        internal override List<DeliveryServer.TransferAgent.Message> GetUndeliveredMessages()
         {
             
             var msgQuery = from m in context.Messages
                             where m.status == Message.StatusWaiting
                             select m;
 
-            var messages = new List<Message>();
+            var messages = new List<DeliveryServer.TransferAgent.Message>();
 
             foreach (var msg in msgQuery) {
-                messages.Add(new Message(msg, context));
+                messages.Add(new DeliveryServer.TransferAgent.Message(msg, context));
             }
 
             return messages;
