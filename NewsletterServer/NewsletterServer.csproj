@@ -67,6 +67,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTransferObject\Message.cs" />
+    <Compile Include="TransferAgent\EntityMessageProvider.cs" />
+    <Compile Include="TransferAgent\MessageProvider.cs" />
     <Compile Include="TransferAgent\Messenger.cs" />
     <Compile Include="TransferAgent\Message.cs" />
     <Compile Include="TransferAgent\MessageTransferAgent.cs" />

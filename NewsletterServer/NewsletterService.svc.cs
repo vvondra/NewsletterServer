@@ -24,6 +24,7 @@ namespace NewsletterServer
         static void CreateMappings()
         {
             AutoMapper.Mapper.CreateMap<Subscriber, DataTransferObject.Subscriber>();
+            AutoMapper.Mapper.CreateMap<Message, DataTransferObject.Message>();
         }
 
         /// <inheritdoc />

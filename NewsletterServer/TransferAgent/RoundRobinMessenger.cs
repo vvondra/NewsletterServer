@@ -26,7 +26,12 @@ namespace NewsletterServer.TransferAgent
         /// <summary>
         /// MTA for sending messages
         /// </summary>
-        internal MessageTransferAgent Mta { get; set; }
+        MessageTransferAgent mta { get; set; }
+
+        /// <summary>
+        /// Provider of messages
+        /// </summary>
+        MessageProvider provider { get; set; }
 
         /// <summary>
         /// Used for throttling, stores the last time of the cycle
@@ -37,35 +42,16 @@ namespace NewsletterServer.TransferAgent
         /// Amount of time throttling is behing schedule
         /// </summary>
         protected TimeSpan TimeDebt = new TimeSpan(0);
+
         /// <summary>
         /// Prepares the messenger
         /// </summary>
         /// <param name="mta">mail transfer agent to be used</param>
-        internal RoundRobinMessenger(MessageTransferAgent mta)
+        internal RoundRobinMessenger(MessageTransferAgent mta, MessageProvider provider)
         {
-            Mta = mta;
+            this.mta = mta;
+            this.provider = provider;
         }
-
-        /// <summary>
-        /// Loads currently waiting messages
-        /// </summary>
-        /// <returns></returns>
-        List<Message> LoadMessages()
-        {
-            using (var newsletterEntities = new NewsletterEntities()) {
-                var msgQuery = from m in newsletterEntities.Messages
-                               where m.status == Message.StatusWaiting
-                               select m;
-
-                var messages = new List<Message>();
-
-                foreach (var msg in msgQuery) {
-                    messages.Add(new Message(msg, newsletterEntities));
-                }
-
-                return messages;
-            }
-        } 
 
         /// <summary>
         /// Delivers selected messages
@@ -73,7 +59,7 @@ namespace NewsletterServer.TransferAgent
         /// <param name="messages">List of messages to be sent</param>
         internal override void Deliver()
         {
-            var messages = LoadMessages();
+            var messages = provider.GetUndeliveredMessages();
             // Deliver messages until there are none left
             while (messages.Count > 0) {
 
@@ -99,7 +85,7 @@ namespace NewsletterServer.TransferAgent
                 }
 
                 // Refresh queue
-                messages = LoadMessages();
+                messages = provider.GetUndeliveredMessages();
             }
         }
 
@@ -154,7 +140,7 @@ namespace NewsletterServer.TransferAgent
         protected void DeliverMessageToSubscribers(Message msg, List<Subscriber> subscribers)
         {
             foreach (var recepient in subscribers) {
-                Mta.Send(recepient.contact, msg.Content);
+                mta.Send(recepient.contact, msg.Content);
             }
         }
     }
