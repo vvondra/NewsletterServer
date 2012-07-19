@@ -21,6 +21,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("NewsletterModel", "FK_Subscribers_Newsletters", "Newsletters", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(NewsletterServer.Newsletter), "Subscribers", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(NewsletterServer.Subscriber), true)]
 [assembly: EdmRelationshipAttribute("NewsletterModel", "FK_Messages_Newsletters", "Newsletter", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(NewsletterServer.Newsletter), "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(NewsletterServer.Message), true)]
 [assembly: EdmRelationshipAttribute("NewsletterModel", "FK_Users_Newsletters", "Newsletter", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(NewsletterServer.Newsletter), "Users", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(NewsletterServer.Users), true)]
+[assembly: EdmRelationshipAttribute("NewsletterModel", "Queue", "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(NewsletterServer.Message), "Subscriber", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(NewsletterServer.Subscriber))]
 
 #endregion
 
@@ -232,7 +233,8 @@ namespace NewsletterServer
         /// <param name="subject">Initial value of the subject property.</param>
         /// <param name="text">Initial value of the text property.</param>
         /// <param name="clean_text">Initial value of the clean_text property.</param>
-        public static Message CreateMessage(global::System.Int32 id, global::System.DateTime date, global::System.Int32 newsletter, global::System.String subject, global::System.String text, global::System.String clean_text)
+        /// <param name="status">Initial value of the status property.</param>
+        public static Message CreateMessage(global::System.Int32 id, global::System.DateTime date, global::System.Int32 newsletter, global::System.String subject, global::System.String text, global::System.String clean_text, global::System.Byte status)
         {
             Message message = new Message();
             message.id = id;
@@ -241,6 +243,7 @@ namespace NewsletterServer
             message.subject = subject;
             message.text = text;
             message.clean_text = clean_text;
+            message.status = status;
             return message;
         }
 
@@ -393,6 +396,30 @@ namespace NewsletterServer
         private global::System.String _clean_text;
         partial void Onclean_textChanging(global::System.String value);
         partial void Onclean_textChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Byte status
+        {
+            get
+            {
+                return _status;
+            }
+            set
+            {
+                OnstatusChanging(value);
+                ReportPropertyChanging("status");
+                _status = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("status");
+                OnstatusChanged();
+            }
+        }
+        private global::System.Byte _status;
+        partial void OnstatusChanging(global::System.Byte value);
+        partial void OnstatusChanged();
 
         #endregion
     
@@ -432,6 +459,28 @@ namespace NewsletterServer
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Newsletter>("NewsletterModel.FK_Messages_Newsletters", "Newsletter", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("NewsletterModel", "Queue", "Subscriber")]
+        public EntityCollection<Subscriber> Subscribers
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Subscriber>("NewsletterModel.Queue", "Subscriber");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Subscriber>("NewsletterModel.Queue", "Subscriber", value);
                 }
             }
         }
@@ -756,6 +805,28 @@ namespace NewsletterServer
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Newsletter>("NewsletterModel.FK_Subscribers_Newsletters", "Newsletters", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("NewsletterModel", "Queue", "Message")]
+        public EntityCollection<Message> Messages
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Message>("NewsletterModel.Queue", "Message");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Message>("NewsletterModel.Queue", "Message", value);
                 }
             }
         }

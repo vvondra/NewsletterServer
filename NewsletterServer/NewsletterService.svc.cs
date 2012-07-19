@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Text;
 using System.Data.Objects;
 using NewsletterServer.User;
 
@@ -52,6 +47,18 @@ namespace NewsletterServer
             }
         }
 
+        /// <inheritdoc />
+        public DataTransferObject.Subscriber[] GetSubscribers(string authKey)
+        {
+            return null;
+        }
+
+        /// <inheritdoc />
+        public bool QueueMessage(int subject, int body, int clean_body, string authKey)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Generates a unique authentication key
         /// </summary>
@@ -64,18 +71,6 @@ namespace NewsletterServer
             GuidString = GuidString.Replace("+", "");
 
             return GuidString;
-        }
-
-        /// <inheritdoc />
-        public DataTransferObject.Subscriber[] GetSubscribers(string authKey)
-        {
-            return null;
-        }
-
-        /// <inheritdoc />
-        public bool QueueMessage(int subject, int body, int clean_body, string authKey)
-        {
-            throw new NotImplementedException();
         }
     }
 }

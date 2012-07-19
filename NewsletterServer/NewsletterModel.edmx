@@ -8,12 +8,21 @@
         <EntityContainer Name="NewsletterModelStoreContainer">
           <EntitySet Name="Messages" EntityType="NewsletterModel.Store.Messages" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Newsletters" EntityType="NewsletterModel.Store.Newsletters" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Queue" EntityType="NewsletterModel.Store.Queue" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Subscribers" EntityType="NewsletterModel.Store.Subscribers" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="sysdiagrams" EntityType="NewsletterModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Users" EntityType="NewsletterModel.Store.Users" store:Type="Tables" Schema="dbo" />
           <AssociationSet Name="FK_Messages_Newsletters" Association="NewsletterModel.Store.FK_Messages_Newsletters">
             <End Role="Newsletters" EntitySet="Newsletters" />
             <End Role="Messages" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Queue_Messages" Association="NewsletterModel.Store.FK_Queue_Messages">
+            <End Role="Messages" EntitySet="Messages" />
+            <End Role="Queue" EntitySet="Queue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Queue_Subscribers" Association="NewsletterModel.Store.FK_Queue_Subscribers">
+            <End Role="Subscribers" EntitySet="Subscribers" />
+            <End Role="Queue" EntitySet="Queue" />
           </AssociationSet>
           <AssociationSet Name="FK_Subscribers_Newsletters" Association="NewsletterModel.Store.FK_Subscribers_Newsletters">
             <End Role="Newsletters" EntitySet="Newsletters" />
@@ -34,6 +43,7 @@
           <Property Name="subject" Type="nvarchar" Nullable="false" MaxLength="120" />
           <Property Name="text" Type="ntext" Nullable="false" />
           <Property Name="clean_text" Type="ntext" Nullable="false" />
+          <Property Name="status" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="Newsletters">
           <Key>
@@ -41,6 +51,14 @@
           </Key>
           <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Queue">
+          <Key>
+            <PropertyRef Name="message_id" />
+            <PropertyRef Name="subsciber_id" />
+          </Key>
+          <Property Name="message_id" Type="int" Nullable="false" />
+          <Property Name="subsciber_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Subscribers">
           <Key>
@@ -81,6 +99,32 @@
             </Principal>
             <Dependent Role="Messages">
               <PropertyRef Name="newsletter" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Queue_Messages">
+          <End Role="Messages" Type="NewsletterModel.Store.Messages" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Queue" Type="NewsletterModel.Store.Queue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Messages">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Queue">
+              <PropertyRef Name="message_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Queue_Subscribers">
+          <End Role="Subscribers" Type="NewsletterModel.Store.Subscribers" Multiplicity="1" />
+          <End Role="Queue" Type="NewsletterModel.Store.Queue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subscribers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Queue">
+              <PropertyRef Name="subsciber_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -143,6 +187,10 @@
             <Parameter Name="password" Mode="In" Type="String" />
             <Parameter Name="ret" Mode="InOut" Type="Int32" />
           </FunctionImport>
+          <AssociationSet Name="Queue" Association="NewsletterModel.Queue">
+            <End Role="Message" EntitySet="Messages" />
+            <End Role="Subscriber" EntitySet="Subscribers" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Message">
           <Key>
@@ -155,6 +203,8 @@
           <Property Name="text" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="clean_text" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Newsletters" Relationship="NewsletterModel.FK_Messages_Newsletters" FromRole="Message" ToRole="Newsletter" />
+          <Property Type="Byte" Name="status" Nullable="false" />
+          <NavigationProperty Name="Subscribers" Relationship="NewsletterModel.Queue" FromRole="Message" ToRole="Subscriber" />
         </EntityType>
         <EntityType Name="Newsletter">
           <Key>
@@ -175,6 +225,7 @@
           <Property Name="contact" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
           <Property Name="newsletter" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Newsletter1" Relationship="NewsletterModel.FK_Subscribers_Newsletters" FromRole="Subscribers" ToRole="Newsletters" />
+          <NavigationProperty Name="Messages" Relationship="NewsletterModel.Queue" FromRole="Subscriber" ToRole="Message" />
           </EntityType>
         <Association Name="FK_Subscribers_Newsletters">
           <End Role="Newsletters" Type="NewsletterModel.Newsletter" Multiplicity="1">
@@ -224,6 +275,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="Queue">
+          <End Type="NewsletterModel.Message" Role="Message" Multiplicity="*" />
+          <End Type="NewsletterModel.Subscriber" Role="Subscriber" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -231,7 +286,8 @@
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="NewsletterModelStoreContainer" CdmEntityContainer="NewsletterEntities">
           <EntitySetMapping Name="Messages"><EntityTypeMapping TypeName="NewsletterModel.Message"><MappingFragment StoreEntitySet="Messages">
-            <ScalarProperty Name="id" ColumnName="id" />
+            <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="id" ColumnName="id" />
             <ScalarProperty Name="date" ColumnName="date" />
             <ScalarProperty Name="newsletter" ColumnName="newsletter" />
             <ScalarProperty Name="subject" ColumnName="subject" />
@@ -259,6 +315,14 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="GetUserNewsletter" FunctionName="NewsletterModel.Store.LoginUserAndGetNewsletter" />
+          <AssociationSetMapping Name="Queue" TypeName="NewsletterModel.Queue" StoreEntitySet="Queue">
+            <EndProperty Name="Subscriber">
+              <ScalarProperty Name="id" ColumnName="subsciber_id" />
+            </EndProperty>
+            <EndProperty Name="Message">
+              <ScalarProperty Name="id" ColumnName="message_id" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -280,22 +344,28 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="Model1">
-        <EntityTypeShape EntityType="NewsletterModel.Message" Width="1.5" PointX="0.75" PointY="3.75" Height="2.3648893229166665" IsExpanded="true" />
-        <EntityTypeShape EntityType="NewsletterModel.Newsletter" Width="1.5" PointX="0.75" PointY="1.125" Height="1.5956835937499996" IsExpanded="true" />
-        <EntityTypeShape EntityType="NewsletterModel.Subscriber" Width="1.5" PointX="3" PointY="0.875" Height="1.9802864583333335" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewsletterModel.Message" Width="1.5" PointX="5.5" PointY="4.625" Height="2.7494921874999996" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewsletterModel.Newsletter" Width="1.5" PointX="1" PointY="0.625" Height="1.9802864583333331" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewsletterModel.Subscriber" Width="1.5" PointX="8" PointY="1.375" Height="2.172587890625" IsExpanded="true" />
         <AssociationConnector Association="NewsletterModel.FK_Subscribers_Newsletters" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="2.1151432291666667" />
-          <ConnectorPoint PointX="3" PointY="2.1151432291666667" />
+          <ConnectorPoint PointX="2.5" PointY="1.9901432291666665" />
+          <ConnectorPoint PointX="8" PointY="1.9901432291666665" />
         </AssociationConnector>
         <AssociationConnector Association="NewsletterModel.FK_Messages_Newsletters" >
-          <ConnectorPoint PointX="1.5" PointY="3.1052864583333331" />
-          <ConnectorPoint PointX="1.5" PointY="3.75" />
+          <ConnectorPoint PointX="1.54687375" PointY="2.6052864583333331" />
+          <ConnectorPoint PointX="1.54687375" PointY="6.5211393229166665" />
+          <ConnectorPoint PointX="5.5" PointY="6.5211393229166665" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="NewsletterModel.Users" Width="1.5" PointX="4.125" PointY="4" Height="1.9802864583333335" />
+        <EntityTypeShape EntityType="NewsletterModel.Users" Width="1.5" PointX="3.125" PointY="3.625" Height="1.9802864583333335" />
         <AssociationConnector Association="NewsletterModel.FK_Users_Newsletters" >
-          <ConnectorPoint PointX="2.25" PointY="3.0115364583333335" />
-          <ConnectorPoint PointX="4.9375" PointY="3.0115364583333335" />
-          <ConnectorPoint PointX="4.9375" PointY="4" />
+          <ConnectorPoint PointX="2.1562525" PointY="2.6052864583333331" />
+          <ConnectorPoint PointX="2.1562525" PointY="4.6151432291666667" />
+          <ConnectorPoint PointX="3.125" PointY="4.6151432291666667" />
+        </AssociationConnector>
+        <AssociationConnector Association="NewsletterModel.Queue" >
+          <ConnectorPoint PointX="6.25" PointY="4.625" />
+          <ConnectorPoint PointX="6.25" PointY="2.800118059895834" />
+          <ConnectorPoint PointX="8" PointY="2.800118059895834" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

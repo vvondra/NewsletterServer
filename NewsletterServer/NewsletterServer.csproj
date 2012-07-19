@@ -67,6 +67,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TransferAgent\Messenger.cs" />
+    <Compile Include="TransferAgent\Message.cs" />
+    <Compile Include="TransferAgent\MessageTransferAgent.cs" />
+    <Compile Include="TransferAgent\RoundRobinMessenger.cs" />
+    <Compile Include="TransferAgent\SmtpTransferAgent.cs" />
     <Compile Include="User\SessionManager.cs" />
     <Compile Include="DataTransferObject\Subscriber.cs" />
     <Compile Include="Services\IMessageService.cs" />
