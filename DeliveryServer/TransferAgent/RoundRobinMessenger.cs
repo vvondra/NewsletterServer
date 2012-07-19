@@ -74,9 +74,6 @@ namespace DeliveryServer.TransferAgent
 
                         // No recepients left
                         if (recepients.Count() == 0) {
-                            // Remove message from queue
-                            messages.Remove(msg);
-
                             // Call delivered event
                             msg.MessageDelivered(this, null);
                             continue;
@@ -90,7 +87,7 @@ namespace DeliveryServer.TransferAgent
                     messages = provider.GetUndeliveredMessages();
                 }
 
-                System.Threading.Thread.Sleep(10000);
+                System.Threading.Thread.Sleep(1000);
             }
         }
 
