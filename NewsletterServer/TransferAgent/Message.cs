@@ -15,12 +15,12 @@ namespace NewsletterServer.TransferAgent
         /// <summary>
         /// Flag that the message is waiting to be sent
         /// </summary>
-        public const int StatusWaiting = 0;
+        internal const int StatusWaiting = 0;
 
         /// <summary>
         /// Flag that the message was delivered to all recepients
         /// </summary>
-        public const int StatusDelivered = 3;
+        internal const int StatusDelivered = 3;
 
         /// <summary>
         /// Entity context
