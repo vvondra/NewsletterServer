@@ -11,7 +11,6 @@ namespace NewsletterServer
 
     /// <summary>
     /// Service providing all communication with newsletter service
-    /// Maintains a delivery thread in the background to send queued messages
     /// </summary>
     public class NewsletterService : IAuthService, ISubscriberService, IMessageService
     {
