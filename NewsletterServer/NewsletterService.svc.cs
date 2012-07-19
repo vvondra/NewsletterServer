@@ -56,6 +56,7 @@ namespace NewsletterServer
 
         /// <summary>
         /// Creates mappings from ADO entities to Data Transfer Objects
+        /// Hides internal entity objects
         /// </summary>
         static void CreateMappings()
         {
@@ -85,10 +86,11 @@ namespace NewsletterServer
         /// <inheritdoc />
         public DataTransferObject.SubscriberDto[] GetSubscribers(string authKey)
         {
-            if (!AuthenticateUser(authKey)) {
+            if (!IsAuthenticatedKey(authKey)) {
                 return null;
             }
 
+            // Fetch all subscribers for authed user
             using (var context = new NewsletterEntities()) {
                 var subscriberQuery = from s in context.Subscribers
                                       where s.newsletter == sessions.GetSession(authKey).NewsletterId
@@ -106,7 +108,7 @@ namespace NewsletterServer
         /// <inheritdoc />
         public bool QueueMessage(string subject, string body, string clean_body, string authKey)
         {
-            if (!AuthenticateUser(authKey)) {
+            if (!IsAuthenticatedKey(authKey)) {
                 return false;
             }
 
@@ -128,7 +130,12 @@ namespace NewsletterServer
             return true;
         }
 
-        bool AuthenticateUser(string authKey)
+        /// <summary>
+        /// Checks whether the user is correctly authenticated
+        /// </summary>
+        /// <param name="authKey">authentication key</param>
+        /// <returns>true when authenticated</returns>
+        bool IsAuthenticatedKey(string authKey)
         {
             // Check authentication
             if (!sessions.IsAuthenticated(authKey)) {
