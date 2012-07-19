@@ -22,6 +22,6 @@ namespace NewsletterServer
         /// <param name="authKey">Authentication key provide by authentication serivce <see cref="IAuthService.GetAuthKey"/></param>
         /// <returns></returns>
         [OperationContract]
-        DataTransferObject.Subscriber[] GetSubscribers(string authKey);
+        DataTransferObject.SubscriberDto[] GetSubscribers(string authKey);
     }
 }

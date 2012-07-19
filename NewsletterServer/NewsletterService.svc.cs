@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Data.Objects;
 using System.Threading;
 using NewsletterServer.User;
+using System.Web.Services.Protocols;
 
 namespace NewsletterServer
 {
@@ -56,8 +59,8 @@ namespace NewsletterServer
         /// </summary>
         static void CreateMappings()
         {
-            AutoMapper.Mapper.CreateMap<Subscriber, DataTransferObject.Subscriber>();
-            AutoMapper.Mapper.CreateMap<Message, DataTransferObject.Message>();
+            AutoMapper.Mapper.CreateMap<Subscriber, DataTransferObject.SubscriberDto>();
+            AutoMapper.Mapper.CreateMap<Message, DataTransferObject.MessageDto>();
         }
 
         /// <inheritdoc />
@@ -80,22 +83,32 @@ namespace NewsletterServer
         }
 
         /// <inheritdoc />
-        public DataTransferObject.Subscriber[] GetSubscribers(string authKey)
+        public DataTransferObject.SubscriberDto[] GetSubscribers(string authKey)
         {
-            return null;
+            if (!AuthenticateUser(authKey)) {
+                return null;
+            }
+
+            using (var context = new NewsletterEntities()) {
+                var subscriberQuery = from s in context.Subscribers
+                                      where s.newsletter == sessions.GetSession(authKey).NewsletterId
+                                      select s;
+
+                var subscribers = new List<DataTransferObject.SubscriberDto>();
+                foreach (var subscriber in subscriberQuery) {
+                    subscribers.Add(AutoMapper.Mapper.Map<Subscriber, DataTransferObject.SubscriberDto>(subscriber));
+                }
+
+                return subscribers.ToArray();
+            }
         }
 
         /// <inheritdoc />
         public bool QueueMessage(string subject, string body, string clean_body, string authKey)
         {
-
-            // Check authentication
-            if (!sessions.IsAuthenticated(authKey)) {
+            if (!AuthenticateUser(authKey)) {
                 return false;
             }
-
-            // Revalidate user
-            sessions.BumpSession(authKey);
 
             // Create a message entity and store it
             using (var context = new NewsletterEntities()) {
@@ -111,6 +124,19 @@ namespace NewsletterServer
                 // Persist changes
                 context.SaveChanges();
             }
+
+            return true;
+        }
+
+        bool AuthenticateUser(string authKey)
+        {
+            // Check authentication
+            if (!sessions.IsAuthenticated(authKey)) {
+                return false;
+            }
+
+            // Revalidate user
+            sessions.BumpSession(authKey);
 
             return true;
         }

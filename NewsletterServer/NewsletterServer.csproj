@@ -67,7 +67,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataTransferObject\Message.cs" />
+    <Compile Include="DataTransferObject\MessageDto.cs" />
     <Compile Include="TransferAgent\EntityMessageProvider.cs" />
     <Compile Include="TransferAgent\MessageProvider.cs" />
     <Compile Include="TransferAgent\Messenger.cs" />
@@ -76,7 +76,7 @@
     <Compile Include="TransferAgent\RoundRobinMessenger.cs" />
     <Compile Include="TransferAgent\SmtpTransferAgent.cs" />
     <Compile Include="User\SessionManager.cs" />
-    <Compile Include="DataTransferObject\Subscriber.cs" />
+    <Compile Include="DataTransferObject\SubscriberDto.cs" />
     <Compile Include="Services\IMessageService.cs" />
     <Compile Include="Services\ISubscriberService.cs" />
     <Compile Include="NewsletterModel.Designer.cs">
