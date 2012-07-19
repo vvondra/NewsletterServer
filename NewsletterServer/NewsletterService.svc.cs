@@ -88,9 +88,30 @@ namespace NewsletterServer
         }
 
         /// <inheritdoc />
-        public bool QueueMessage(int subject, int body, int clean_body, string authKey)
+        public bool QueueMessage(string subject, string body, string clean_body, string authKey)
         {
-            throw new NotImplementedException();
+
+            // Check authentication
+            if (!sessions.IsAuthenticated(authKey) {
+                return false;
+            }
+
+            // Revalidate user
+            sessions.BumpSession(authKey);
+
+            // Create a message entity and store it
+            using (var context = new NewsletterEntities()) {
+                var message = new Message();
+                message.status = TransferAgent.Message.StatusWaiting;
+                message.text = body;
+                message.clean_text = clean_body;
+                message.subject = subject;
+                message.newsletter = sessions.GetSession(authKey).NewsletterId;
+
+                context.Messages.AddObject(message);
+            }
+
+            return true;
         }
 
         /// <summary>

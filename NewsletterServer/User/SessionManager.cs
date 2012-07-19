@@ -38,6 +38,11 @@ namespace NewsletterServer.User
             Sessions.Add(authKey, session);
         }
 
+        internal UserSession GetSession(string authKey)
+        {
+            return Sessions[authKey];
+        }
+
         /// <summary>
         /// Removes sessions older than set timeout
         /// </summary>
