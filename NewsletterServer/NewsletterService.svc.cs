@@ -90,7 +90,7 @@ namespace NewsletterServer
         {
 
             // Check authentication
-            if (!sessions.IsAuthenticated(authKey) {
+            if (!sessions.IsAuthenticated(authKey)) {
                 return false;
             }
 
@@ -107,6 +107,9 @@ namespace NewsletterServer
                 message.newsletter = sessions.GetSession(authKey).NewsletterId;
 
                 context.Messages.AddObject(message);
+
+                // Persist changes
+                context.SaveChanges();
             }
 
             return true;
