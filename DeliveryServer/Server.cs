@@ -6,7 +6,10 @@ using System.Threading;
 
 namespace DeliveryServer
 {
-    class Program
+    /// <summary>
+    /// Maintains a delivery thread in the background to send queued messages
+    /// </summary>
+    class Server
     {
         static void Main(string[] args)
         {
@@ -15,6 +18,8 @@ namespace DeliveryServer
                 new TransferAgent.SmtpTransferAgent(),
                 new TransferAgent.EntityMessageProvider(new NewsletterServer.NewsletterEntities())
             );
+
+            deliveryThread.Join();
         }
 
         /// <summary>
