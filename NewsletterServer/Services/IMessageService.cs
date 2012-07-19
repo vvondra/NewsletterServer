@@ -23,6 +23,6 @@ namespace NewsletterServer
         /// <param name="clean_body">Content of the message without any markup</param>
         /// <returns>Return true when queueing was successful</returns>
         [OperationContract]
-        bool QueueMessage(int subject, int body, int clean_body, string authKey);
+        bool QueueMessage(string subject, string body, string clean_body, string authKey);
     }
 }
