@@ -4,8 +4,20 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vw="clr-namespace:ClientSide.View"
     xmlns:ff="clr-namespace:ClientSide.UI"
+    xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     HorizontalAlignment="Center"
     VerticalAlignment="Center">
+    <UserControl.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                    <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                    <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                    <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                    <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+    </UserControl.Resources>
     <Grid VerticalAlignment="Center">
         <StackPanel HorizontalAlignment="Center">
             <Label FontSize="16" FontWeight="Light" Content="username" Target="{Binding ElementName=usernameTxt}"/>
@@ -20,6 +32,8 @@
             </PasswordBox>
             <Button Margin="0, 30, 0, 0" Content="Log in" Height="23" x:Name="logInButton" Width="120" Command="{Binding Path=LoginCommand}">
             </Button>
+            
+            <Controls:ProgressRing IsActive="{Binding Path=IsProcessingLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
     </Grid>
 
