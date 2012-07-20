@@ -10,7 +10,7 @@ namespace ClientSide.ViewModel
     /// <summary>
     /// A UI-friendly wrapper for a Subscriber object.
     /// </summary>
-    public class SubscriberViewModel : WorkspaceViewModel, IDataErrorInfo
+    public class SubscriberViewModel : ViewModelBase, IDataErrorInfo
     {
         #region Fields
 

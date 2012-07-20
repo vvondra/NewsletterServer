@@ -15,13 +15,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <DataTemplate x:Key="ViewsTemplate">
-               <TabControl 
-              IsSynchronizedWithCurrentItem="True" 
-              ItemsSource="{Binding}" 
-              Margin="4"
-              />
-            </DataTemplate>
+
             
             <!-- Bind LoginViewModel to its view -->
             <DataTemplate DataType="{x:Type vm:LoginViewModel}">
@@ -31,8 +25,7 @@
     </Window.Resources>
     
     <ContentControl 
-        Content="{Binding Path=Views}"
-        ContentTemplate="{StaticResource ViewsTemplate}"
+        Content="{Binding Path=CurrentView}"
     />
     
     <!--

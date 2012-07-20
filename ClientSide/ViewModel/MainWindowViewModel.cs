@@ -14,7 +14,7 @@ namespace ClientSide.ViewModel
     /// <summary>
     /// The ViewModel for the application's main window.
     /// </summary>
-    public class MainWindowViewModel : WorkspaceViewModel
+    public class MainWindowViewModel : ViewModelBase
     {
         #region Fields
 
@@ -25,7 +25,6 @@ namespace ClientSide.ViewModel
 
         ReadOnlyCollection<CommandViewModel> _commands;
         readonly SubscriberService _SubscriberService;
-        ObservableCollection<WorkspaceViewModel> _views;
 
         #endregion // Fields
 
@@ -72,78 +71,48 @@ namespace ClientSide.ViewModel
 
         #endregion // Commands
 
-        #region Workspaces
-
         /// <summary>
-        /// Returns the collection of available views
+        /// Holds the currently active view in window
         /// </summary>
-        public ObservableCollection<WorkspaceViewModel> Views
-        {
-            get
-            {
-                if (_views == null) {
-                    _views = new ObservableCollection<WorkspaceViewModel>();
-                    _views.CollectionChanged += this.OnViewsChanged;
-                }
-                return _views;
-            }
-        }
+        public ViewModelBase CurrentView { get; set; }
 
-
-
-        void OnViewsChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.NewItems != null && e.NewItems.Count != 0)
-                foreach (WorkspaceViewModel workspace in e.NewItems)
-                    workspace.RequestClose += this.OnViewRequestClose;
-
-            if (e.OldItems != null && e.OldItems.Count != 0)
-                foreach (WorkspaceViewModel workspace in e.OldItems)
-                    workspace.RequestClose -= this.OnViewRequestClose;
-        }
-
-        void OnViewRequestClose(object sender, EventArgs e)
-        {
-            WorkspaceViewModel workspace = sender as WorkspaceViewModel;
-            workspace.Dispose();
-            this.Views.Remove(workspace);
-        }
-
-        #endregion // Workspaces
-
-        #region Private Helpers
 
         void CreateNewSubscriber()
         {
             Subscriber newSubscriber = Subscriber.CreateNewSubscriber();
             SubscriberViewModel workspace = new SubscriberViewModel(newSubscriber, _SubscriberService);
-            this.Views.Add(workspace);
-            this.SetActiveWorkspace(workspace);
+            this.SetActiveView(workspace);
         }
 
+        /// <summary>
+        /// Sets the login dialog as the current view
+        /// </summary>
         void ShowLoginDialog()
         {
             LoginViewModel loginVm = new LoginViewModel();
             loginVm.LoginSuccessful += this.GetAuthenticationKey;
-            this.Views.Add(loginVm);
-            this.SetActiveWorkspace(loginVm);
+            this.SetActiveView(loginVm);
         }
 
+        /// <summary>
+        /// Sets the auth key for the view model from the login call
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         void GetAuthenticationKey(object sender, EventArgs args)
         {
             AuthKey = (args as LoginEventArgs).AuthKey;
             _SubscriberService.AuthKey = AuthKey;
         }
 
-        void SetActiveWorkspace(WorkspaceViewModel workspace)
+        /// <summary>
+        /// Sets the view as the currently active in the window
+        /// </summary>
+        /// <param name="view">view to be selected as primary</param>
+        void SetActiveView(ViewModelBase view)
         {
-            Debug.Assert(this.Views.Contains(workspace));
-
-            ICollectionView collectionView = CollectionViewSource.GetDefaultView(this.Views);
-            if (collectionView != null)
-                collectionView.MoveCurrentTo(workspace);
+            this.CurrentView = view;
         }
 
-        #endregion // Private Helpers
     }
 }

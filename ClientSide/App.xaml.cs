@@ -32,10 +32,8 @@ namespace ClientSide
             EventHandler handler = null;
             handler = delegate
             {
-                viewModel.RequestClose -= handler;
                 window.Close();
             };
-            viewModel.RequestClose += handler;
 
             // Allow all controls in the window to 
             // bind to the ViewModel by setting the 
