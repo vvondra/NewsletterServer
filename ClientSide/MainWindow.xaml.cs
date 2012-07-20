@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ClientSide.ViewModel;
 using MahApps.Metro.Controls;
 
 namespace ClientSide
@@ -36,12 +37,5 @@ namespace ClientSide
             Show();
         }
 
-        private void MainMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            DataContext = null;
-            if (TabSubscibers.IsSelected) {
-                DataContext = new SubcriberViewModel();
-            }
-        }
     }
 }

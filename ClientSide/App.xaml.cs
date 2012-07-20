@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Windows;
+using ClientSide.ViewModel;
 
 namespace ClientSide
 {
@@ -15,17 +16,34 @@ namespace ClientSide
     public partial class App : Application
     {
 
-        private MainWindow main = new MainWindow();
 
-        private LoginWindow login = new LoginWindow();
-
-        private void Application_Startup(object sender, StartupEventArgs e)
+        protected override void OnStartup(StartupEventArgs e)
         {
-            Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
-            Application.Current.MainWindow = login;
+            base.OnStartup(e);
 
-            login.LoginSuccessful += main.StartupMainWindow;
-            login.Show();
+            MainWindow window = new MainWindow();
+
+            // Create the ViewModel to which 
+            // the main window binds.
+            var viewModel = new MainWindowViewModel();
+
+            // When the ViewModel asks to be closed, 
+            // close the window.
+            EventHandler handler = null;
+            handler = delegate
+            {
+                viewModel.RequestClose -= handler;
+                window.Close();
+            };
+            viewModel.RequestClose += handler;
+
+            // Allow all controls in the window to 
+            // bind to the ViewModel by setting the 
+            // DataContext, which propagates down 
+            // the element tree.
+            window.DataContext = viewModel;
+
+            window.Show();
         }
     }
 }

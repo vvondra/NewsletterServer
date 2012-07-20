@@ -66,5 +66,59 @@ namespace ClientSide.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Newsletter composer.
+        /// </summary>
+        public static string MainWindowViewModel_DisplayName {
+            get {
+                return ResourceManager.GetString("MainWindowViewModel_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The subscriber&apos;s name is missing..
+        /// </summary>
+        public static string Subsciber_MissingName {
+            get {
+                return ResourceManager.GetString("Subsciber_MissingName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The e-mail is invalid..
+        /// </summary>
+        public static string Subscriber_InvalidEmail {
+            get {
+                return ResourceManager.GetString("Subscriber_InvalidEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name is invalid..
+        /// </summary>
+        public static string Subscriber_InvalidName {
+            get {
+                return ResourceManager.GetString("Subscriber_InvalidName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The subscriber&apos;s e-mail is missing..
+        /// </summary>
+        public static string Subscriber_MissingEmail {
+            get {
+                return ResourceManager.GetString("Subscriber_MissingEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot save subscriber..
+        /// </summary>
+        public static string SubscriberViewModel_Exception_CannotSave {
+            get {
+                return ResourceManager.GetString("SubscriberViewModel_Exception_CannotSave", resourceCulture);
+            }
+        }
     }
 }
