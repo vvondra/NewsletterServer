@@ -7,7 +7,7 @@ using ClientSide.ViewModel.Workspace;
 
 namespace ClientSide.Model
 {
-    public class MessageService
+    public class MessageService : IDisposable
     {
 
         /// <summary>
@@ -53,6 +53,14 @@ namespace ClientSide.Model
             if (MessageSent != null) {
                 MessageSent(this, new MessageSentEventArgs());
             }
+        }
+
+        /// <summary>
+        /// Close connection on disposal
+        /// </summary>
+        public void Dispose()
+        {
+            client.Close();
         }
     }
 }

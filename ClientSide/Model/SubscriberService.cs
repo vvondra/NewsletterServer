@@ -7,7 +7,7 @@ using ClientSide.ViewModel.Workspace;
 
 namespace ClientSide.Model
 {
-    public class SubscriberService
+    public class SubscriberService : IDisposable
     {
 
         /// <summary>
@@ -121,5 +121,12 @@ namespace ClientSide.Model
             return GetSubscribers().Contains(s);
         }
 
+        /// <summary>
+        /// Close connection on disposal
+        /// </summary>
+        public void Dispose()
+        {
+            client.Close();
+        }
     }
 }
