@@ -54,7 +54,7 @@ namespace ClientSide.ViewModel
                 if (_workspaces == null) {
                     _workspaces = new ObservableCollection<ViewModelBase> {
                         new SubscriberListViewModel(new ClientSide.Model.SubscriberService(AuthKey)),
-                        new ComposeViewModel(),
+                        new ComposeViewModel(new ClientSide.Model.MessageService(AuthKey)),
                     };
 
                     SelectedWorkspace = _workspaces.First();

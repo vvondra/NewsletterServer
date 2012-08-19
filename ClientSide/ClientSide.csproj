@@ -74,6 +74,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Command\RelayCommand.cs" />
+    <Compile Include="Model\MessageService.cs" />
     <Compile Include="Model\SubscriberService.cs" />
     <Compile Include="NewsletterServerProxy.cs" />
     <Compile Include="UI\BooleanConverter.cs" />

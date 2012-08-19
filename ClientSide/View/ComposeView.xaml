@@ -21,7 +21,9 @@
     </UserControl.Resources>
     <StackPanel Margin="5">
         <TextBox Controls:TextboxHelper.Watermark="Message subject" Margin="0,0,0,25"></TextBox>
-        <ex:HtmlEditor x:Name="Editor" />
+        <ContentControl 
+            Content="{Binding Path=Editor}"
+        />
         <Button HorizontalAlignment="Right" Margin="0, 30, 0, 0" Content="Send" Height="23" x:Name="logInButton" Width="120" Command="{Binding Path=SendCommand}"></Button>
     </StackPanel>
 </UserControl>
