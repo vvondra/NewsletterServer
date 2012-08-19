@@ -137,6 +137,7 @@ namespace ClientSide.ViewModel
             try {
                 var client = new AuthServiceClient();
                 args.Result = client.GetAuthKey(credentials.Username, credentials.Password);
+                client.Close();
             } catch (EndpointNotFoundException e) {
                 args.Result = String.Empty;
             }
