@@ -9,6 +9,7 @@
           <EntitySet Name="Messages" EntityType="NewsletterModel.Store.Messages" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Newsletters" EntityType="NewsletterModel.Store.Newsletters" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Queue" EntityType="NewsletterModel.Store.Queue" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Sessions" EntityType="NewsletterModel.Store.Sessions" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Subscribers" EntityType="NewsletterModel.Store.Subscribers" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="sysdiagrams" EntityType="NewsletterModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Users" EntityType="NewsletterModel.Store.Users" store:Type="Tables" Schema="dbo" />
@@ -23,6 +24,10 @@
           <AssociationSet Name="FK_Queue_Subscribers" Association="NewsletterModel.Store.FK_Queue_Subscribers">
             <End Role="Subscribers" EntitySet="Subscribers" />
             <End Role="Queue" EntitySet="Queue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sessions_Users" Association="NewsletterModel.Store.FK_Sessions_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Sessions" EntitySet="Sessions" />
           </AssociationSet>
           <AssociationSet Name="FK_Subscribers_Newsletters" Association="NewsletterModel.Store.FK_Subscribers_Newsletters">
             <End Role="Newsletters" EntitySet="Newsletters" />
@@ -59,6 +64,14 @@
           </Key>
           <Property Name="message_id" Type="int" Nullable="false" />
           <Property Name="subsciber_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sessions">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="auth_key" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="time" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Subscribers">
           <Key>
@@ -128,6 +141,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Sessions_Users">
+          <End Role="Users" Type="NewsletterModel.Store.Users" Multiplicity="1" />
+          <End Role="Sessions" Type="NewsletterModel.Store.Sessions" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Sessions">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Subscribers_Newsletters">
           <End Role="Newsletters" Type="NewsletterModel.Store.Newsletters" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -190,6 +215,11 @@
           <AssociationSet Name="Queue" Association="NewsletterModel.Queue">
             <End Role="Message" EntitySet="Messages" />
             <End Role="Subscriber" EntitySet="Subscribers" />
+          </AssociationSet>
+          <EntitySet Name="Sessions" EntityType="NewsletterModel.Sessions" />
+          <AssociationSet Name="FK_Sessions_Users" Association="NewsletterModel.FK_Sessions_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Sessions" EntitySet="Sessions" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Message">
@@ -262,6 +292,7 @@
           <Property Type="String" Name="password" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Type="Int32" Name="newsletter" Nullable="false" />
           <NavigationProperty Name="Newsletters" Relationship="NewsletterModel.FK_Users_Newsletters" FromRole="Users" ToRole="Newsletter" />
+          <NavigationProperty Name="Sessions" Relationship="NewsletterModel.FK_Sessions_Users" FromRole="Users" ToRole="Sessions" />
         </EntityType>
         <Association Name="FK_Users_Newsletters">
           <End Type="NewsletterModel.Newsletter" Role="Newsletter" Multiplicity="1" />
@@ -278,6 +309,27 @@
         <Association Name="Queue">
           <End Type="NewsletterModel.Message" Role="Message" Multiplicity="*" />
           <End Type="NewsletterModel.Subscriber" Role="Subscriber" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Sessions">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Type="Int32" Name="user_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="auth_key" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="time" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="NewsletterModel.FK_Sessions_Users" FromRole="Sessions" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK_Sessions_Users">
+          <End Type="NewsletterModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="NewsletterModel.Sessions" Role="Sessions" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Sessions">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -323,6 +375,15 @@
               <ScalarProperty Name="id" ColumnName="message_id" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Sessions">
+            <EntityTypeMapping TypeName="NewsletterModel.Sessions">
+              <MappingFragment StoreEntitySet="Sessions">
+                <ScalarProperty Name="time" ColumnName="time" />
+                <ScalarProperty Name="auth_key" ColumnName="auth_key" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -358,14 +419,21 @@
         </AssociationConnector>
         <EntityTypeShape EntityType="NewsletterModel.Users" Width="1.5" PointX="3.125" PointY="3.625" Height="1.9802864583333335" />
         <AssociationConnector Association="NewsletterModel.FK_Users_Newsletters" >
-          <ConnectorPoint PointX="2.1562525" PointY="2.6052864583333331" />
-          <ConnectorPoint PointX="2.1562525" PointY="4.6151432291666667" />
-          <ConnectorPoint PointX="3.125" PointY="4.6151432291666667" />
+          <ConnectorPoint PointX="2.054689375" PointY="2.6052864583333331" />
+          <ConnectorPoint PointX="2.054689375" PointY="4.7112939453125" />
+          <ConnectorPoint PointX="3.125" PointY="4.7112939453125" />
         </AssociationConnector>
         <AssociationConnector Association="NewsletterModel.Queue" >
           <ConnectorPoint PointX="6.25" PointY="4.625" />
           <ConnectorPoint PointX="6.25" PointY="2.800118059895834" />
           <ConnectorPoint PointX="8" PointY="2.800118059895834" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="NewsletterModel.Sessions" Width="1.5" PointX="10.375" PointY="3.875" Height="1.7879850260416674" />
+        <AssociationConnector Association="NewsletterModel.FK_Sessions_Users" >
+          <ConnectorPoint PointX="4.625" PointY="4.21875" />
+          <ConnectorPoint PointX="6.166666666666667" PointY="4.2187499999999991" />
+          <ConnectorPoint PointX="6.333333333333333" PointY="4.21875" />
+          <ConnectorPoint PointX="10.375" PointY="4.21875" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

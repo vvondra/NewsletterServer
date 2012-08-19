@@ -22,6 +22,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("NewsletterModel", "FK_Messages_Newsletters", "Newsletter", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(NewsletterServer.Newsletter), "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(NewsletterServer.Message), true)]
 [assembly: EdmRelationshipAttribute("NewsletterModel", "FK_Users_Newsletters", "Newsletter", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(NewsletterServer.Newsletter), "Users", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(NewsletterServer.Users), true)]
 [assembly: EdmRelationshipAttribute("NewsletterModel", "Queue", "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(NewsletterServer.Message), "Subscriber", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(NewsletterServer.Subscriber))]
+[assembly: EdmRelationshipAttribute("NewsletterModel", "FK_Sessions_Users", "Users", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(NewsletterServer.Users), "Sessions", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(NewsletterServer.Sessions), true)]
 
 #endregion
 
@@ -136,6 +137,22 @@ namespace NewsletterServer
             }
         }
         private ObjectSet<Users> _Users;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Sessions> Sessions
+        {
+            get
+            {
+                if ((_Sessions == null))
+                {
+                    _Sessions = base.CreateObjectSet<Sessions>("Sessions");
+                }
+                return _Sessions;
+            }
+        }
+        private ObjectSet<Sessions> _Sessions;
 
         #endregion
         #region AddTo Methods
@@ -170,6 +187,14 @@ namespace NewsletterServer
         public void AddToUsers(Users users)
         {
             base.AddObject("Users", users);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Sessions EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToSessions(Sessions sessions)
+        {
+            base.AddObject("Sessions", sessions);
         }
 
         #endregion
@@ -641,6 +666,154 @@ namespace NewsletterServer
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="NewsletterModel", Name="Sessions")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Sessions : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Sessions object.
+        /// </summary>
+        /// <param name="user_id">Initial value of the user_id property.</param>
+        /// <param name="auth_key">Initial value of the auth_key property.</param>
+        /// <param name="time">Initial value of the time property.</param>
+        public static Sessions CreateSessions(global::System.Int32 user_id, global::System.String auth_key, global::System.DateTime time)
+        {
+            Sessions sessions = new Sessions();
+            sessions.user_id = user_id;
+            sessions.auth_key = auth_key;
+            sessions.time = time;
+            return sessions;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 user_id
+        {
+            get
+            {
+                return _user_id;
+            }
+            set
+            {
+                if (_user_id != value)
+                {
+                    Onuser_idChanging(value);
+                    ReportPropertyChanging("user_id");
+                    _user_id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("user_id");
+                    Onuser_idChanged();
+                }
+            }
+        }
+        private global::System.Int32 _user_id;
+        partial void Onuser_idChanging(global::System.Int32 value);
+        partial void Onuser_idChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String auth_key
+        {
+            get
+            {
+                return _auth_key;
+            }
+            set
+            {
+                Onauth_keyChanging(value);
+                ReportPropertyChanging("auth_key");
+                _auth_key = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("auth_key");
+                Onauth_keyChanged();
+            }
+        }
+        private global::System.String _auth_key;
+        partial void Onauth_keyChanging(global::System.String value);
+        partial void Onauth_keyChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime time
+        {
+            get
+            {
+                return _time;
+            }
+            set
+            {
+                OntimeChanging(value);
+                ReportPropertyChanging("time");
+                _time = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("time");
+                OntimeChanged();
+            }
+        }
+        private global::System.DateTime _time;
+        partial void OntimeChanging(global::System.DateTime value);
+        partial void OntimeChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("NewsletterModel", "FK_Sessions_Users", "Users")]
+        public Users Users
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Users>("NewsletterModel.FK_Sessions_Users", "Users").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Users>("NewsletterModel.FK_Sessions_Users", "Users").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Users> UsersReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Users>("NewsletterModel.FK_Sessions_Users", "Users");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Users>("NewsletterModel.FK_Sessions_Users", "Users", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="NewsletterModel", Name="Subscriber")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -1001,6 +1174,44 @@ namespace NewsletterServer
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Newsletter>("NewsletterModel.FK_Users_Newsletters", "Newsletter", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("NewsletterModel", "FK_Sessions_Users", "Sessions")]
+        public Sessions Sessions
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Sessions>("NewsletterModel.FK_Sessions_Users", "Sessions").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Sessions>("NewsletterModel.FK_Sessions_Users", "Sessions").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Sessions> SessionsReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Sessions>("NewsletterModel.FK_Sessions_Users", "Sessions");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Sessions>("NewsletterModel.FK_Sessions_Users", "Sessions", value);
                 }
             }
         }
