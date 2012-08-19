@@ -27,7 +27,7 @@ namespace ClientSide.ViewModel.Workspace
 
         #region Private fields
 
-        string _subject;
+        string _subject = String.Empty;
         HtmlEditor _editor;
         RelayCommand _sendCommand;
         MessageService _msgService;
@@ -84,6 +84,8 @@ namespace ClientSide.ViewModel.Workspace
         void Send()
         {
             _msgService.QueueMessage(Subject, Editor.ContentHtml, Editor.ContentText);
+            Subject = String.Empty;
+            Editor.ContentHtml = String.Empty;
         }
 
         /// <summary>
