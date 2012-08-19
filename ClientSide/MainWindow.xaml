@@ -35,6 +35,10 @@
                 <vw:ComposeView />
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type vmw:StatusViewModel}">
+                <vw:StatusView />
+            </DataTemplate>
+
             <DataTemplate DataType="{x:Type vmw:SubscriberViewModel}">
                 <vw:SubscriberView />
             </DataTemplate>

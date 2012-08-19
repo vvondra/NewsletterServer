@@ -86,6 +86,8 @@
     <Compile Include="Model\Credentials.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\Workspace\ComposeViewModel.cs" />
+    <Compile Include="ViewModel\Workspace\StatusViewModel.cs" />
+    <Compile Include="ViewModel\Workspace\MessageSentEventArgs.cs" />
     <Compile Include="ViewModel\Workspace\SubscriberChangedEventArgs.cs" />
     <Compile Include="ViewModel\Workspace\SubscriberListViewModel.cs" />
     <Compile Include="ViewModel\Workspace\SubscriberViewModel.cs" />
@@ -93,6 +95,9 @@
     <Compile Include="ViewModel\WorkspaceViewModel.cs" />
     <Compile Include="View\ComposeView.xaml.cs">
       <DependentUpon>ComposeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StatusView.xaml.cs">
+      <DependentUpon>StatusView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SubscriberListView.xaml.cs">
       <DependentUpon>SubscriberListView.xaml</DependentUpon>
@@ -106,6 +111,10 @@
     <Page Include="View\ComposeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\StatusView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\LoginView.xaml">
       <SubType>Designer</SubType>

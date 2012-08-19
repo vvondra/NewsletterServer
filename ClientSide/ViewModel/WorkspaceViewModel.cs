@@ -52,9 +52,20 @@ namespace ClientSide.ViewModel
             get
             {
                 if (_workspaces == null) {
+
+                    var msgService = new ClientSide.Model.MessageService(AuthKey);
+                    var svm = new StatusViewModel(msgService);
+
+                    // Switch to status page after queing a message
+                    msgService.MessageSent += delegate(object sender, MessageSentEventArgs args)
+                    {
+                        SelectedWorkspace = svm;
+                    };
+
                     _workspaces = new ObservableCollection<ViewModelBase> {
                         new SubscriberListViewModel(new ClientSide.Model.SubscriberService(AuthKey)),
-                        new ComposeViewModel(new ClientSide.Model.MessageService(AuthKey)),
+                        new ComposeViewModel(msgService),
+                        svm,
                     };
 
                     SelectedWorkspace = _workspaces.First();

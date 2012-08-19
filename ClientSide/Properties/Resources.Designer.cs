@@ -95,6 +95,15 @@ namespace ClientSide.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to status.
+        /// </summary>
+        public static string Status_DisplayName {
+            get {
+                return ResourceManager.GetString("Status_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The subscriber&apos;s name is missing..
         /// </summary>
         public static string Subsciber_MissingName {

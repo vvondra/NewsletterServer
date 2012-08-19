@@ -216,6 +216,9 @@
   <data name="MainWindowViewModel_DisplayName" xml:space="preserve">
     <value>Newsletter composer</value>
   </data>
+  <data name="Status_DisplayName" xml:space="preserve">
+    <value>status</value>
+  </data>
   <data name="Subsciber_MissingName" xml:space="preserve">
     <value>The subscriber's name is missing.</value>
   </data>

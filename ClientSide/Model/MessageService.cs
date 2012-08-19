@@ -11,6 +11,11 @@ namespace ClientSide.Model
     {
 
         /// <summary>
+        /// Called when a message is sent
+        /// </summary>
+        public EventHandler<MessageSentEventArgs> MessageSent;
+
+        /// <summary>
         /// Creates a service through which messages can be sent to server
         /// </summary>
         /// <param name="key">service authentication key</param>
@@ -45,6 +50,9 @@ namespace ClientSide.Model
         public void QueueMessage(string subject, string body, string clean_body)
         {
             client.QueueMessage(subject, body, clean_body, authKey);
+            if (MessageSent != null) {
+                MessageSent(this, new MessageSentEventArgs());
+            }
         }
     }
 }
