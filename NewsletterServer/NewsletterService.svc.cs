@@ -159,6 +159,7 @@ namespace NewsletterServer
                 message.clean_text = clean_body;
                 message.subject = subject;
                 message.newsletter = sessions.GetSession(authKey).NewsletterId;
+                message.date = DateTime.Now;
 
                 context.Messages.AddObject(message);
 
