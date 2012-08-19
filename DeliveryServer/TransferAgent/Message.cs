@@ -16,12 +16,12 @@ namespace DeliveryServer.TransferAgent
         /// <summary>
         /// Flag that the message is waiting to be sent
         /// </summary>
-        internal const int StatusWaiting = 0;
+        internal const int StatusWaiting = 3;
 
         /// <summary>
         /// Flag that the message was delivered to all recepients
         /// </summary>
-        internal const int StatusDelivered = 3;
+        internal const int StatusDelivered = 0;
 
         /// <summary>
         /// Entity context
