@@ -61,6 +61,7 @@ namespace DeliveryServer.TransferAgent
         internal override void Deliver()
         {
             while (true) {
+                System.Console.WriteLine("Fetching undelivered messages");
                 var messages = provider.GetUndeliveredMessages();
                 // Deliver messages until there are none left
                 while (messages.Count > 0) {
@@ -70,11 +71,13 @@ namespace DeliveryServer.TransferAgent
                     foreach (var msg in messages) {
 
                         // Take a fair slice of subscribers so all messages get the same
+                        System.Console.WriteLine("Fetch subscriber batch for message");
                         var recepients = msg.GetUndeliveredSubscribers(MessagesPerBatch / messages.Count).ToList();
 
                         // No recepients left
                         if (recepients.Count() == 0) {
                             // Call delivered event
+                            System.Console.WriteLine("Marking message as delivered");
                             msg.MessageDelivered(this, null);
                             continue;
                         }
@@ -120,6 +123,7 @@ namespace DeliveryServer.TransferAgent
                 }
 
                 // Sleep for what is left of sleep time after covering debt
+                Console.WriteLine("Throttling for {0}", sleepTime);
                 System.Threading.Thread.Sleep(sleepTime);
             }
 
