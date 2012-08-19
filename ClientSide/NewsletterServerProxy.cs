@@ -65,7 +65,16 @@ public interface ISubscriberService
 {
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ISubscriberService/GetSubscribers", ReplyAction="http://tempuri.org/ISubscriberService/GetSubscribersResponse")]
-    NewsletterServer.DataTransferObject.Subscriber[] GetSubscribers(string authKey);
+    NewsletterServer.DataTransferObject.SubscriberDto[] GetSubscribers(string authKey);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ISubscriberService/AddSubscriber", ReplyAction="http://tempuri.org/ISubscriberService/AddSubscriberResponse")]
+    void AddSubscriber(string authKey, NewsletterServer.DataTransferObject.SubscriberDto subscriber);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ISubscriberService/UpdateSubscriber", ReplyAction="http://tempuri.org/ISubscriberService/UpdateSubscriberResponse")]
+    void UpdateSubscriber(string authKey, NewsletterServer.DataTransferObject.SubscriberDto subscriber);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ISubscriberService/DeleteSubscriber", ReplyAction="http://tempuri.org/ISubscriberService/DeleteSubscriberResponse")]
+    void DeleteSubscriber(string authKey, int id);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -102,9 +111,24 @@ public partial class SubscriberServiceClient : System.ServiceModel.ClientBase<IS
     {
     }
     
-    public NewsletterServer.DataTransferObject.Subscriber[] GetSubscribers(string authKey)
+    public NewsletterServer.DataTransferObject.SubscriberDto[] GetSubscribers(string authKey)
     {
         return base.Channel.GetSubscribers(authKey);
+    }
+    
+    public void AddSubscriber(string authKey, NewsletterServer.DataTransferObject.SubscriberDto subscriber)
+    {
+        base.Channel.AddSubscriber(authKey, subscriber);
+    }
+    
+    public void UpdateSubscriber(string authKey, NewsletterServer.DataTransferObject.SubscriberDto subscriber)
+    {
+        base.Channel.UpdateSubscriber(authKey, subscriber);
+    }
+    
+    public void DeleteSubscriber(string authKey, int id)
+    {
+        base.Channel.DeleteSubscriber(authKey, id);
     }
 }
 
@@ -114,7 +138,7 @@ public interface IMessageService
 {
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessageService/QueueMessage", ReplyAction="http://tempuri.org/IMessageService/QueueMessageResponse")]
-    bool QueueMessage(int subject, int body, int clean_body, string authKey);
+    bool QueueMessage(string subject, string body, string clean_body, string authKey);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -151,7 +175,7 @@ public partial class MessageServiceClient : System.ServiceModel.ClientBase<IMess
     {
     }
     
-    public bool QueueMessage(int subject, int body, int clean_body, string authKey)
+    public bool QueueMessage(string subject, string body, string clean_body, string authKey)
     {
         return base.Channel.QueueMessage(subject, body, clean_body, authKey);
     }
@@ -163,13 +187,15 @@ namespace NewsletterServer.DataTransferObject
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Subscriber", Namespace="http://schemas.datacontract.org/2004/07/NewsletterServer.DataTransferObject")]
-    public partial class Subscriber : object, System.Runtime.Serialization.IExtensibleDataObject
+    [System.Runtime.Serialization.DataContractAttribute(Name="SubscriberDto", Namespace="http://schemas.datacontract.org/2004/07/NewsletterServer.DataTransferObject")]
+    public partial class SubscriberDto : object, System.Runtime.Serialization.IExtensibleDataObject
     {
         
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private string ContactField;
+        
+        private int IdField;
         
         private bool IsSubscribedField;
         
@@ -197,6 +223,19 @@ namespace NewsletterServer.DataTransferObject
             set
             {
                 this.ContactField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Id
+        {
+            get
+            {
+                return this.IdField;
+            }
+            set
+            {
+                this.IdField = value;
             }
         }
         

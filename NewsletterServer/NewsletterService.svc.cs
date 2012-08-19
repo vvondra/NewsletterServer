@@ -16,11 +16,6 @@ namespace NewsletterServer
     {
 
         /// <summary>
-        /// Holds authenticated sessions
-        /// </summary>
-        private SessionManager sessions = new SessionManager();
-
-        /// <summary>
         /// Creates mappings from ADO entities to Data Transfer Objects
         /// Hides internal entity objects
         /// </summary>
@@ -33,13 +28,16 @@ namespace NewsletterServer
         /// <inheritdoc />
         public string GetAuthKey(string username, string password)
         {
+
             try {
                 using (var context = new NewsletterEntities()) {
+                    var sessions = new SessionManager(context);
+
                     var newsletter = new ObjectParameter("ret", typeof(Int32));
                     context.GetUserNewsletter(username, password, newsletter);
                     var newsletterId = Int32.Parse(newsletter.Value.ToString());
                     if (newsletterId > 0) {
-                        return sessions.CreateSession(username, newsletterId);
+                        return sessions.CreateSession(username);
                     }
 
                     return String.Empty;
@@ -50,7 +48,7 @@ namespace NewsletterServer
         }
 
         /// <inheritdoc />
-        public DataTransferObject.SubscriberDto[] GetSubscribers(string authKey)
+        public List<DataTransferObject.SubscriberDto> GetSubscribers(string authKey)
         {
             if (!IsAuthenticatedKey(authKey)) {
                 return null;
@@ -58,17 +56,87 @@ namespace NewsletterServer
 
             // Fetch all subscribers for authed user
             using (var context = new NewsletterEntities()) {
+                var sessions = new SessionManager(context);
+                var newsletterId = sessions.GetSession(authKey).NewsletterId;
                 var subscriberQuery = from s in context.Subscribers
-                                      where s.newsletter == sessions.GetSession(authKey).NewsletterId
+                                      where s.newsletter == newsletterId
                                       select s;
 
                 var subscribers = new List<DataTransferObject.SubscriberDto>();
                 CreateMappings();
                 foreach (var subscriber in subscriberQuery) {
-                    subscribers.Add(AutoMapper.Mapper.Map<Subscriber, DataTransferObject.SubscriberDto>(subscriber));
+                    var mapped = AutoMapper.Mapper.Map<Subscriber, DataTransferObject.SubscriberDto>(subscriber);
+                    subscribers.Add(mapped);
                 }
 
-                return subscribers.ToArray();
+                return subscribers;
+            }
+        }
+
+        /// <inheritdoc />
+        public void AddSubscriber(string authKey, DataTransferObject.SubscriberDto s)
+        {
+            if (!IsAuthenticatedKey(authKey)) {
+                return;
+            }
+
+            using (var context = new NewsletterEntities()) {
+                var subscriber = new Subscriber();
+                var sessions = new SessionManager(context);
+                subscriber.name = s.Name;
+                subscriber.contact = s.Contact;
+                subscriber.newsletter = sessions.GetSession(authKey).NewsletterId;
+
+                context.Subscribers.AddObject(subscriber);
+                context.SaveChanges();
+            }
+        }
+
+        /// <inheritdoc />
+        public void UpdateSubscriber(string authKey, DataTransferObject.SubscriberDto sub)
+        {
+            if (!IsAuthenticatedKey(authKey)) {
+                return;
+            }
+
+            using (var context = new NewsletterEntities()) {
+                var sessions = new SessionManager(context);
+                var newsletterId = sessions.GetSession(authKey).NewsletterId;
+                var subscriberQuery = from s in context.Subscribers
+                                      where s.newsletter == newsletterId && s.id == sub.Id
+                                      select s;
+
+                foreach (var row in subscriberQuery) {
+                    row.name = sub.Name;
+                    row.contact = sub.Contact;
+                }
+
+                context.SaveChanges();
+            }
+        }
+
+        /// <inheritdoc />
+        public void DeleteSubscriber(string authKey, int id)
+        {
+            if (!IsAuthenticatedKey(authKey)) {
+                return;
+            }
+
+            // Create a message entity and store it
+            using (var context = new NewsletterEntities()) {
+
+                var sessions = new SessionManager(context);
+                var newsletterId = sessions.GetSession(authKey).NewsletterId;
+                var subscriberQuery = from s in context.Subscribers
+                                      where s.newsletter == newsletterId && s.id == id
+                                      select s;
+
+                foreach (var row in subscriberQuery) {
+                    context.Subscribers.DeleteObject(row);
+                }
+
+                // Persist changes
+                context.SaveChanges();
             }
         }
 
@@ -81,6 +149,8 @@ namespace NewsletterServer
 
             // Create a message entity and store it
             using (var context = new NewsletterEntities()) {
+
+                var sessions = new SessionManager(context);
                 var message = new Message();
                 message.status = 3; // TODO DeliveryServer.TransferAgent.Message.StatusWaiting;
                 message.text = body;
@@ -104,6 +174,7 @@ namespace NewsletterServer
         /// <returns>true when authenticated</returns>
         bool IsAuthenticatedKey(string authKey)
         {
+            var sessions = new SessionManager(new NewsletterEntities());
             // Check authentication
             if (!sessions.IsAuthenticated(authKey)) {
                 return false;

@@ -8,8 +8,13 @@ namespace NewsletterServer.DataTransferObject
     /// Data Transfer Object for subscribers, hides entity code
     /// </summary>
     [DataContract]
+    [Serializable]
     public class SubscriberDto
     {
+
+        [DataMember]
+        public int Id { get; set; }
+
         [DataMember]
         public string Name { get; set; }
 

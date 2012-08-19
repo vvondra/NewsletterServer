@@ -113,7 +113,7 @@ namespace ClientSide.Model
                     break;
 
                 default:
-                    Debug.Fail("Unexpected property being validated on Customer: " + propertyName);
+                    Debug.Fail("Unexpected property being validated on Subscriber: " + propertyName);
                     break;
             }
 
