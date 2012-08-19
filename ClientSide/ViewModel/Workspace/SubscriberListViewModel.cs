@@ -72,6 +72,7 @@ namespace ClientSide.ViewModel.Workspace
             set
             {
                 _subscriberPane = value;
+                base.OnPropertyChanged("SubscriberPane");
             }
         }
 
@@ -104,6 +105,11 @@ namespace ClientSide.ViewModel.Workspace
         void OnSubscriberViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             string IsSelected = "IsSelected";
+
+            // When a subscriber row is selected, set the user form to the selected user
+            if (sender is SubscriberViewModel) {
+                SubscriberPane = sender as SubscriberViewModel;
+            }
 
             // Make sure that the property name we're referencing is valid.
             // This is a debugging technique, and does not execute in a Release build.

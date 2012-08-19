@@ -62,7 +62,7 @@
             </ListView.View>
         </ListView>
         <ContentControl 
-            Content="{Binding Path=SubscriberPane}"
+            Content="{Binding Path=SubscriberPane, UpdateSourceTrigger=PropertyChanged}"
         />
     </StackPanel>
     
