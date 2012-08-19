@@ -23,6 +23,9 @@ namespace NewsletterServer.DataTransferObject
         public DateTime Date { get; set; }
 
         [DataMember]
-        public int Status { get; set; }
+        public string Status { get; set; }
+
+        [DataMember]
+        public int WaitingToBeSent { get; set; }
     }
 }

@@ -62,6 +62,8 @@ namespace ClientSide.ViewModel
                         SelectedWorkspace = svm;
                     };
 
+                    msgService.MessageSent += svm.OnMessageSent;
+
                     _workspaces = new ObservableCollection<ViewModelBase> {
                         new SubscriberListViewModel(new ClientSide.Model.SubscriberService(AuthKey)),
                         new ComposeViewModel(msgService),

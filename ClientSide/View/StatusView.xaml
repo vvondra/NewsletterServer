@@ -1,0 +1,62 @@
+﻿<UserControl
+    x:Class="ClientSide.View.StatusView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vw="clr-namespace:ClientSide.View"
+    xmlns:ff="clr-namespace:ClientSide.UI"
+    xmlns:ex="clr-namespace:Smith.WPF.HtmlEditor;assembly=Smith.WPF.HtmlEditor"
+    xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    HorizontalAlignment="Center"
+    VerticalAlignment="Center">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <StackPanel Orientation="Vertical">
+    <ListView
+      HorizontalAlignment="Stretch" Width="600"
+      ItemsSource="{Binding Path=Messages, UpdateSourceTrigger=PropertyChanged}">
+        <ListView.View>
+            <GridView>
+                <GridViewColumn
+                    Width="200"
+            Header="Subject" 
+            DisplayMemberBinding="{Binding Path=Subject}" 
+            />
+                <GridViewColumn
+                    Width="175"
+            Header="Date" 
+            DisplayMemberBinding="{Binding Path=Date}" 
+            />
+
+                <GridViewColumn
+                    Width="110"
+            Header="Status" 
+            DisplayMemberBinding="{Binding Path=Status}" 
+            />
+
+                <GridViewColumn
+                    Width="100"
+            Header="Remaining" 
+            DisplayMemberBinding="{Binding Path=WaitingToBeSent}" 
+            />
+
+
+            </GridView>
+        </ListView.View>
+    </ListView>
+        <Button HorizontalAlignment="Right"
+          Content="Refresh"
+          Command="{Binding Path=RefreshCommand}"
+          Margin="0,15,20,15"
+         >
+        </Button>
+    </StackPanel>
+</UserControl>
