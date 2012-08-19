@@ -143,6 +143,7 @@ namespace DeliveryServer.TransferAgent
         {
             foreach (var recepient in subscribers) {
                 mta.Send(recepient.contact, msg.Content);
+                msg.AddDelivery(recepient);
             }
         }
     }

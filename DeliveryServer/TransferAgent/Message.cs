@@ -72,6 +72,7 @@ namespace DeliveryServer.TransferAgent
 
             // Delete subscriber from queue for this mailing
             objectContext.DeleteObject(queueQuery.First());
+            objectContext.SaveChanges();
         }
 
         /// <summary>
