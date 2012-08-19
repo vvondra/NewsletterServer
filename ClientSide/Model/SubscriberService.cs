@@ -23,7 +23,12 @@ namespace ClientSide.Model
         /// <summary>
         /// Raised when a subscriber is added
         /// </summary>
-        public event EventHandler<SubscriberAddedEventArgs> SubscriberAdded;
+        public event EventHandler<SubscriberChangedEventArgs> SubscriberAdded;
+
+        /// <summary>
+        /// Raised when a subscriber is deleted
+        /// </summary>
+        public event EventHandler<SubscriberChangedEventArgs> SubscriberDeleted;
 
         /// <summary>
         /// Auth key for service client
@@ -81,13 +86,28 @@ namespace ClientSide.Model
 
                 // Raise added event
                 if (SubscriberAdded != null) {
-                    SubscriberAdded(this, new SubscriberAddedEventArgs(s));
+                    SubscriberAdded(this, new SubscriberChangedEventArgs(s));
                 }
             } else {
                 var dto = new NewsletterServer.DataTransferObject.SubscriberDto();
                 dto.Contact = s.Email;
                 dto.Name = s.Name;
 
+            }
+        }
+
+        /// <summary>
+        /// Sends a deletion request for the subscriber
+        /// </summary>
+        /// <param name="s">subscriber to be removed</param>
+        public void DeleteSubscriber(Subscriber s)
+        {
+            if (ContainsSubscriber(s)) {
+                client.DeleteSubscriber(AuthKey, s.Id);
+            }
+
+            if (SubscriberDeleted != null) {
+                SubscriberDeleted(this, new SubscriberChangedEventArgs(s));
             }
         }
 

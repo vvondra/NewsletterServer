@@ -76,6 +76,8 @@
     <Compile Include="Command\RelayCommand.cs" />
     <Compile Include="Model\SubscriberService.cs" />
     <Compile Include="NewsletterServerProxy.cs" />
+    <Compile Include="UI\BooleanConverter.cs" />
+    <Compile Include="UI\BooleanToVisibilityConverter.cs" />
     <Compile Include="UI\PasswordBoxAssistant.cs" />
     <Compile Include="ViewModel\Workspace\CommandViewModel.cs" />
     <Compile Include="ViewModel\LoginEventArgs.cs" />
@@ -83,7 +85,7 @@
     <Compile Include="Model\Credentials.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\Workspace\ComposeViewModel.cs" />
-    <Compile Include="ViewModel\Workspace\SubscriberAddedEventArgs.cs" />
+    <Compile Include="ViewModel\Workspace\SubscriberChangedEventArgs.cs" />
     <Compile Include="ViewModel\Workspace\SubscriberListViewModel.cs" />
     <Compile Include="ViewModel\Workspace\SubscriberViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />

@@ -3,6 +3,7 @@
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:vw="clr-namespace:ClientSide.View"
+  xmlns:ui="clr-namespace:ClientSide.UI"
   xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
   HorizontalAlignment="Center"
   VerticalAlignment="Center"
@@ -17,6 +18,11 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <ui:BooleanToVisibilityConverter 
+                x:Key="BooleanToVisibilityConverter" 
+                True="Collapsed" 
+                False="Visible"
+             />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -81,14 +87,30 @@
       Text="{Binding Path=Email, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
       Validation.ErrorTemplate="{x:Null}"
       />
-        <!-- SAVE BUTTON -->
-        <Button 
-      Grid.Row="6" Grid.Column="2"
-      Command="{Binding Path=SaveCommand}"
-      Content="{Binding Path=SaveButtonText}"
-      HorizontalAlignment="Right"
-      Margin="4,2" 
-      MinWidth="60" 
-      />
+
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Grid.Row="6" Grid.Column="2">
+            <!-- DELETE BUTTON -->
+            <Button 
+              Command="{Binding Path=DeleteCommand}"
+              Content="Delete"
+              HorizontalAlignment="Right"
+              Margin="4,2" 
+              MinWidth="60" 
+              >
+                <Button.Visibility>
+                    <Binding Path="IsNewSubscriber"
+                    Converter="{StaticResource BooleanToVisibilityConverter}"
+                    />
+                </Button.Visibility>
+            </Button>
+
+            <!-- SAVE BUTTON -->
+            <Button 
+              Command="{Binding Path=SaveCommand}"
+              Content="{Binding Path=SaveButtonText}"
+              Margin="4,2" 
+              MinWidth="60" 
+              />
+        </StackPanel>
     </Grid>
 </UserControl>

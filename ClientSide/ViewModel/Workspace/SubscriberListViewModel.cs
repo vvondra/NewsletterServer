@@ -23,6 +23,7 @@ namespace ClientSide.ViewModel.Workspace
             _subscriberService = service;
 
             _subscriberService.SubscriberAdded += this.OnSubscriberAddedToRepository;
+            _subscriberService.SubscriberDeleted += this.OnSubscriberDeletedFromRepository;
 
             LoadSubscribers();
         }
@@ -94,12 +95,12 @@ namespace ClientSide.ViewModel.Workspace
         void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null && e.NewItems.Count != 0)
-                foreach (SubscriberViewModel custVM in e.NewItems)
-                    custVM.PropertyChanged += this.OnSubscriberViewModelPropertyChanged;
+                foreach (SubscriberViewModel svm in e.NewItems)
+                    svm.PropertyChanged += this.OnSubscriberViewModelPropertyChanged;
 
             if (e.OldItems != null && e.OldItems.Count != 0)
-                foreach (SubscriberViewModel custVM in e.OldItems)
-                    custVM.PropertyChanged -= this.OnSubscriberViewModelPropertyChanged;
+                foreach (SubscriberViewModel svm in e.OldItems)
+                    svm.PropertyChanged -= this.OnSubscriberViewModelPropertyChanged;
         }
 
         void OnSubscriberViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -116,10 +117,20 @@ namespace ClientSide.ViewModel.Workspace
             (sender as SubscriberViewModel).VerifyPropertyName(IsSelected);
         }
 
-        void OnSubscriberAddedToRepository(object sender, SubscriberAddedEventArgs e)
+        void OnSubscriberAddedToRepository(object sender, SubscriberChangedEventArgs e)
         {
-            var viewModel = new SubscriberViewModel(e.NewSubscriber, _subscriberService);
+            var viewModel = new SubscriberViewModel(e.Subscriber, _subscriberService);
             this.AllSubscribers.Add(viewModel);
+        }
+
+        void OnSubscriberDeletedFromRepository(object sender, SubscriberChangedEventArgs e)
+        {
+            SubscriberPane = new SubscriberViewModel(Subscriber.CreateNewSubscriber(), _subscriberService);
+            for (int i = 0; i < this.AllSubscribers.Count; i++) {
+                if (this.AllSubscribers[i].Subscriber == e.Subscriber) {
+                    this.AllSubscribers.RemoveAt(i);
+                }
+            }
         }
 
         #endregion // Event Handling Methods

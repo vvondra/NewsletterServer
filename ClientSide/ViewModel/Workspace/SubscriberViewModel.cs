@@ -18,6 +18,7 @@ namespace ClientSide.ViewModel.Workspace
         readonly SubscriberService _subscriberService;
         bool _isSelected;
         RelayCommand _saveCommand;
+        RelayCommand _deleteCommand;
 
         #endregion // Fields
 
@@ -37,7 +38,7 @@ namespace ClientSide.ViewModel.Workspace
 
         #endregion // Constructor
 
-        #region Customer Properties
+        #region Subscriber Properties
 
         public string Email
         {
@@ -73,15 +74,29 @@ namespace ClientSide.ViewModel.Workspace
         }
 
 
-        #endregion // Customer Properties
+        #endregion // Subscriber Properties
 
         #region Presentation Properties
+
+        public Subscriber Subscriber
+        {
+            get { return _subscriber; }
+        }
+
+        /// <summary>
+        /// Returns true if this subscriber was created by the user and it has not yet
+        /// been saved to the subscriber repository.
+        /// </summary>
+        public bool IsNewSubscriber
+        {
+            get { return _subscriber.Id == 0; }
+        }
 
         public override string DisplayName
         {
             get
             {
-                if (IsNewSubsciber) {
+                if (IsNewSubscriber) {
                     return "register new subscriber";
                 }
                 return "edit subscriber " + _subscriber.Name;
@@ -98,7 +113,7 @@ namespace ClientSide.ViewModel.Workspace
         public string SaveButtonText
         {
             get {
-                if (IsNewSubsciber) {
+                if (IsNewSubscriber) {
                     return "Add";
                 }
                 return "Save";
@@ -139,36 +154,54 @@ namespace ClientSide.ViewModel.Workspace
             }
         }
 
+        /// <summary>
+        /// Returns a command that deletes the customer.
+        /// </summary>
+        public ICommand DeleteCommand
+        {
+            get
+            {
+                if (_deleteCommand == null) {
+                    _deleteCommand = new RelayCommand(
+                        param => this.Delete(),
+                        param => !this.IsNewSubscriber
+                        );
+                }
+                return _deleteCommand;
+            }
+        }
+
         #endregion // Presentation Properties
 
         #region Public Methods
 
         /// <summary>
-        /// Saves the customer to the repository.  This method is invoked by the SaveCommand.
+        /// Saves the subscriber to the repository.  This method is invoked by the SaveCommand.
         /// </summary>
         public void Save()
         {
             if (!_subscriber.IsValid)
                 throw new InvalidOperationException(Resources.SubscriberViewModel_Exception_CannotSave);
 
-            if (this.IsNewSubsciber)
+            if (this.IsNewSubscriber) {
                 _subscriberService.SaveSubscriber(_subscriber);
+            }
 
+            base.OnPropertyChanged("IsNewSubscriber");
             base.OnPropertyChanged("DisplayName");
+        }
+
+        /// <summary>
+        /// Deletes subscriber from repository
+        /// </summary>
+        public void Delete()
+        {
+            _subscriberService.DeleteSubscriber(_subscriber);
         }
 
         #endregion // Public Methods
 
         #region Private Helpers
-
-        /// <summary>
-        /// Returns true if this subscriber was created by the user and it has not yet
-        /// been saved to the subscriber repository.
-        /// </summary>
-        bool IsNewSubsciber
-        {
-            get { return _subscriber.Id == 0; }
-        }
 
         /// <summary>
         /// Returns true if the subscriber is valid and can be saved.
