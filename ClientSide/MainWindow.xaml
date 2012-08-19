@@ -45,7 +45,8 @@
         </ResourceDictionary>
     </Window.Resources>
     
-    <ContentControl 
+    <ContentControl
+        HorizontalAlignment="Stretch"
         Content="{Binding Path=CurrentView}"
     />
     

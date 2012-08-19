@@ -31,9 +31,10 @@
             </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
-        <Grid>
+    <Grid HorizontalAlignment="Stretch">
             <TabControl
                IsSynchronizedWithCurrentItem="True"
+               HorizontalAlignment="Stretch"
                ItemsSource="{Binding Path=Workspaces}"
                ItemTemplate="{StaticResource WorkspaceViewTemplate}"
                SelectedItem="{Binding Path=SelectedWorkspace, Mode=TwoWay, NotifyOnSourceUpdated=True}"
