@@ -13,6 +13,8 @@ namespace DeliveryServer.TransferAgent
     internal class SmtpTransferAgent : MessageTransferAgent
     {
 
+        readonly static string defaultSender = "Vojtěch Vondra <mailbox@ameeck.net>";
+
         /// <summary>
         /// Sends a message to the recepient through an SMTP server
         /// </summary>
@@ -21,11 +23,17 @@ namespace DeliveryServer.TransferAgent
         /// <returns>true on successful delivery</returns>
         internal override bool Send(string address, NewsletterServer.Message msg)
         {
-            var mail = new MailMessage("me", address, msg.subject, msg.text);
             try {
-                GetClient().Send(mail);
-                return true;
-            } catch (Exception e) {
+                var mail = new MailMessage(defaultSender, address, msg.subject, msg.text);
+
+                try {
+                    GetClient().Send(mail);
+                    return true;
+                } catch (Exception e) {
+                    return false;
+                }
+
+            } catch (FormatException e) {
                 return false;
             }
         }
