@@ -170,6 +170,47 @@ namespace NewsletterServer
             return true;
         }
 
+        /// <inheritdoc />
+        public List<NewsletterServer.DataTransferObject.MessageDto> GetMessageList(string authKey)
+        {
+            if (!IsAuthenticatedKey(authKey)) {
+                return null;
+            }
+
+            // Fetch all subscribers for authed user
+            using (var context = new NewsletterEntities()) {
+                var sessions = new SessionManager(context);
+                var newsletterId = sessions.GetSession(authKey).NewsletterId;
+                var msgQuery = from m in context.Messages
+                                      where m.newsletter == newsletterId
+                                      select m;
+
+                var msgs = new List<DataTransferObject.MessageDto>();
+                CreateMappings();
+                foreach (var msg in msgQuery) {
+                    var mapped = AutoMapper.Mapper.Map<Message, DataTransferObject.MessageDto>(msg);
+                    switch (msg.status) {
+                        case 0:
+                            mapped.Status = "Done";
+                            break;
+                        case 1:
+                            mapped.Status = "Canceled";
+                            break;
+                        case 3:
+                            mapped.Status = "Queued";
+                            break;
+                    }
+
+                    var queueCountQuery = from s in msg.Subscribers select s;
+                    mapped.WaitingToBeSent = queueCountQuery.Count();
+
+                    msgs.Add(mapped);
+                }
+
+                return msgs;
+            }
+        }
+
         /// <summary>
         /// Checks whether the user is correctly authenticated
         /// </summary>

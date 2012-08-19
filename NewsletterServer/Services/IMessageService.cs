@@ -24,5 +24,13 @@ namespace NewsletterServer
         /// <returns>Return true when queueing was successful</returns>
         [OperationContract]
         bool QueueMessage(string subject, string body, string clean_body, string authKey);
+
+        /// <summary>
+        /// Returns list of messages
+        /// </summary>
+        /// <param name="authKey">authentication key</param>
+        /// <returns>list of messages sent by newsletter</returns>
+        [OperationContract]
+        List<NewsletterServer.DataTransferObject.MessageDto> GetMessageList(string authKey);
     }
 }

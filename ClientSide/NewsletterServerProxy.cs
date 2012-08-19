@@ -139,6 +139,9 @@ public interface IMessageService
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessageService/QueueMessage", ReplyAction="http://tempuri.org/IMessageService/QueueMessageResponse")]
     bool QueueMessage(string subject, string body, string clean_body, string authKey);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessageService/GetMessageList", ReplyAction="http://tempuri.org/IMessageService/GetMessageListResponse")]
+    NewsletterServer.DataTransferObject.MessageDto[] GetMessageList(string authKey);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -178,6 +181,11 @@ public partial class MessageServiceClient : System.ServiceModel.ClientBase<IMess
     public bool QueueMessage(string subject, string body, string clean_body, string authKey)
     {
         return base.Channel.QueueMessage(subject, body, clean_body, authKey);
+    }
+    
+    public NewsletterServer.DataTransferObject.MessageDto[] GetMessageList(string authKey)
+    {
+        return base.Channel.GetMessageList(authKey);
     }
 }
 namespace NewsletterServer.DataTransferObject
@@ -262,6 +270,117 @@ namespace NewsletterServer.DataTransferObject
             set
             {
                 this.NameField = value;
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="MessageDto", Namespace="http://schemas.datacontract.org/2004/07/NewsletterServer.DataTransferObject")]
+    public partial class MessageDto : object, System.Runtime.Serialization.IExtensibleDataObject
+    {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        private System.DateTime DateField;
+        
+        private int IdField;
+        
+        private string StatusField;
+        
+        private string SubjectField;
+        
+        private string TextField;
+        
+        private int WaitingToBeSentField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime Date
+        {
+            get
+            {
+                return this.DateField;
+            }
+            set
+            {
+                this.DateField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Id
+        {
+            get
+            {
+                return this.IdField;
+            }
+            set
+            {
+                this.IdField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Status
+        {
+            get
+            {
+                return this.StatusField;
+            }
+            set
+            {
+                this.StatusField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Subject
+        {
+            get
+            {
+                return this.SubjectField;
+            }
+            set
+            {
+                this.SubjectField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Text
+        {
+            get
+            {
+                return this.TextField;
+            }
+            set
+            {
+                this.TextField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int WaitingToBeSent
+        {
+            get
+            {
+                return this.WaitingToBeSentField;
+            }
+            set
+            {
+                this.WaitingToBeSentField = value;
             }
         }
     }
