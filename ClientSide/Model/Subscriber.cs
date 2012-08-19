@@ -19,11 +19,13 @@ namespace ClientSide.Model
         }
 
         public static Subscriber CreateSubscriber(
+            int id,
             string name,
             bool isSubscribed,
             string email)
         {
             return new Subscriber {
+                Id = id,
                 Name = name,
                 IsSubscribed = isSubscribed,
                 Email = email
@@ -37,6 +39,11 @@ namespace ClientSide.Model
         #endregion // Creation
 
         #region State Properties
+
+        /// <summary>
+        /// Subscriber ID from service
+        /// </summary>
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets/sets the e-mail address

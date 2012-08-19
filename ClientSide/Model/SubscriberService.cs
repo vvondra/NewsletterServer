@@ -54,7 +54,7 @@ namespace ClientSide.Model
 
             _subscribers = new List<Subscriber>();
             foreach (var subscriber in subscribers) {
-                _subscribers.Add(Subscriber.CreateSubscriber(subscriber.Name, subscriber.IsSubscribed, subscriber.Contact));
+                _subscribers.Add(Subscriber.CreateSubscriber(subscriber.Id, subscriber.Name, subscriber.IsSubscribed, subscriber.Contact));
             }
 
             return _subscribers;
@@ -75,13 +75,18 @@ namespace ClientSide.Model
                 dto.Contact = s.Email;
                 dto.Name = s.Name;
                 dto.IsSubscribed = true;
-                client.AddSubscriber(AuthKey, dto);
+
+                // Add user and fetch new Id
+                s.Id = client.AddSubscriber(AuthKey, dto);
 
                 // Raise added event
                 if (SubscriberAdded != null) {
                     SubscriberAdded(this, new SubscriberAddedEventArgs(s));
                 }
             } else {
+                var dto = new NewsletterServer.DataTransferObject.SubscriberDto();
+                dto.Contact = s.Email;
+                dto.Name = s.Name;
 
             }
         }

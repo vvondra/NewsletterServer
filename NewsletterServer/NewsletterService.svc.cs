@@ -74,10 +74,10 @@ namespace NewsletterServer
         }
 
         /// <inheritdoc />
-        public void AddSubscriber(string authKey, DataTransferObject.SubscriberDto s)
+        public int AddSubscriber(string authKey, DataTransferObject.SubscriberDto s)
         {
             if (!IsAuthenticatedKey(authKey)) {
-                return;
+                return 0;
             }
 
             using (var context = new NewsletterEntities()) {
@@ -89,6 +89,8 @@ namespace NewsletterServer
 
                 context.Subscribers.AddObject(subscriber);
                 context.SaveChanges();
+
+                return subscriber.id;
             }
         }
 

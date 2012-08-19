@@ -75,12 +75,12 @@
     </ApplicationDefinition>
     <Compile Include="Command\RelayCommand.cs" />
     <Compile Include="Model\SubscriberService.cs" />
+    <Compile Include="NewsletterServerProxy.cs" />
     <Compile Include="UI\PasswordBoxAssistant.cs" />
     <Compile Include="ViewModel\Workspace\CommandViewModel.cs" />
     <Compile Include="ViewModel\LoginEventArgs.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="Model\Credentials.cs" />
-    <Compile Include="NewsletterServerProxy.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\Workspace\ComposeViewModel.cs" />
     <Compile Include="ViewModel\Workspace\SubscriberAddedEventArgs.cs" />

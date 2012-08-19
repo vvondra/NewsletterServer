@@ -121,7 +121,7 @@ namespace ClientSide.ViewModel
             if (key != String.Empty) {
                 LoginSuccessful(this, new LoginEventArgs(key));
             } else {
-                MessageBox.Show("Invalid credentials");
+                MessageBox.Show("Invalid login information");
             }
         }
 

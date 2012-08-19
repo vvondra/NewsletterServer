@@ -30,8 +30,9 @@ namespace NewsletterServer
         /// </summary>
         /// <param name="authKey"></param>
         /// <param name="subscriber">subscriber to be saved</param>
+        /// <returns>Id of created user</returns> 
         [OperationContract]
-        void AddSubscriber(string authKey, DataTransferObject.SubscriberDto subscriber);
+        int AddSubscriber(string authKey, DataTransferObject.SubscriberDto subscriber);
 
         /// <summary>
         /// Updates a subscriber in the database

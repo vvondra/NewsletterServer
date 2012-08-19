@@ -68,7 +68,7 @@ public interface ISubscriberService
     NewsletterServer.DataTransferObject.SubscriberDto[] GetSubscribers(string authKey);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ISubscriberService/AddSubscriber", ReplyAction="http://tempuri.org/ISubscriberService/AddSubscriberResponse")]
-    void AddSubscriber(string authKey, NewsletterServer.DataTransferObject.SubscriberDto subscriber);
+    int AddSubscriber(string authKey, NewsletterServer.DataTransferObject.SubscriberDto subscriber);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ISubscriberService/UpdateSubscriber", ReplyAction="http://tempuri.org/ISubscriberService/UpdateSubscriberResponse")]
     void UpdateSubscriber(string authKey, NewsletterServer.DataTransferObject.SubscriberDto subscriber);
@@ -116,9 +116,9 @@ public partial class SubscriberServiceClient : System.ServiceModel.ClientBase<IS
         return base.Channel.GetSubscribers(authKey);
     }
     
-    public void AddSubscriber(string authKey, NewsletterServer.DataTransferObject.SubscriberDto subscriber)
+    public int AddSubscriber(string authKey, NewsletterServer.DataTransferObject.SubscriberDto subscriber)
     {
-        base.Channel.AddSubscriber(authKey, subscriber);
+        return base.Channel.AddSubscriber(authKey, subscriber);
     }
     
     public void UpdateSubscriber(string authKey, NewsletterServer.DataTransferObject.SubscriberDto subscriber)

@@ -167,7 +167,7 @@ namespace ClientSide.ViewModel.Workspace
         /// </summary>
         bool IsNewSubsciber
         {
-            get { return !_subscriberService.ContainsSubscriber(_subscriber); }
+            get { return _subscriber.Id == 0; }
         }
 
         /// <summary>
