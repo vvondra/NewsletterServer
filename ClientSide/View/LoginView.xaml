@@ -22,6 +22,9 @@
         <StackPanel HorizontalAlignment="Center">
             <Label FontSize="16" FontWeight="Light" Content="username" Target="{Binding ElementName=usernameTxt}"/>
             <TextBox Height="23" x:Name="usernameTxt" Width="120" Text="{Binding Path=Username, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Validation.ErrorTemplate="{x:Null}">
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding Path=LoginCommand}" Key="Enter" />
+                </TextBox.InputBindings>
             </TextBox>
             
             <Label FontSize="16" FontWeight="Light" Content="password" Target="{Binding ElementName=passwordTxt}"/>
@@ -29,11 +32,15 @@
                          ff:PasswordBoxAssistant.BindPassword="true"
                          ff:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Validation.ErrorTemplate="{x:Null}">
+                <PasswordBox.InputBindings>
+                    <KeyBinding Command="{Binding Path=LoginCommand}" Key="Enter" />
+                </PasswordBox.InputBindings>
             </PasswordBox>
             <Button Margin="0, 30, 0, 0" Content="Log in" Height="23" x:Name="logInButton" Width="120" Command="{Binding Path=LoginCommand}">
             </Button>
             
-            <Controls:ProgressRing IsActive="{Binding Path=IsProcessingLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <!-- Used to indicate progress during login -->
+            <Controls:ProgressRing IsActive="{Binding Path=IsProcessingLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,15,0,0"/>
         </StackPanel>
     </Grid>
 

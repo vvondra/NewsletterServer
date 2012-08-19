@@ -1,0 +1,69 @@
+﻿<UserControl
+    x:Class="ClientSide.View.SubscriberListView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vw="clr-namespace:ClientSide.View"
+    xmlns:ff="clr-namespace:ClientSide.UI"
+    xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    HorizontalAlignment="Stretch"
+    VerticalAlignment="Center">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        
+        
+
+            <Style x:Key="CustomerItemStyle" TargetType="{x:Type ListViewItem}">
+
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+
+                <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}" />
+                <Style.Triggers>
+                    <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                            <Condition Property="ItemsControl.AlternationIndex" Value="1" />
+                            <Condition Property="IsSelected" Value="False" />
+                            <Condition Property="IsMouseOver" Value="False" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="Background" Value="#EEEEEEEE" />
+                    </MultiTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical" Margin="5">
+        <TextBlock Text="{Binding Path=DisplayName, Mode=OneWay}"
+                  HorizontalAlignment="Right"
+                   FontSize="16" FontWeight="Light" />
+    <ListView
+      AlternationCount="2"
+      HorizontalAlignment="Stretch"
+      ItemContainerStyle="{StaticResource CustomerItemStyle}"
+      ItemsSource="{Binding Path=AllSubscribers, UpdateSourceTrigger=PropertyChanged}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn 
+            Header="Name" 
+            DisplayMemberBinding="{Binding Path=Name}" 
+            />
+                    <GridViewColumn 
+            Header="E-mail" 
+            DisplayMemberBinding="{Binding Path=Email}" 
+            />
+               
+            </GridView>
+            </ListView.View>
+        </ListView>
+        <ContentControl 
+            Content="{Binding Path=SubscriberPane}"
+        />
+    </StackPanel>
+    
+</UserControl>

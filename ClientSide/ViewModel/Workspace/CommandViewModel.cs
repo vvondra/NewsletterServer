@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace ClientSide.ViewModel
+namespace ClientSide.ViewModel.Workspace
 {
     /// <summary>
     /// Represents an actionable item displayed by a View.

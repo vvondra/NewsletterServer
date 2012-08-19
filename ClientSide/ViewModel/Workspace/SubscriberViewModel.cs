@@ -5,7 +5,7 @@ using ClientSide.Model;
 using ClientSide.Properties;
 using NewsletterServer;
 
-namespace ClientSide.ViewModel
+namespace ClientSide.ViewModel.Workspace
 {
     /// <summary>
     /// A UI-friendly wrapper for a Subscriber object.
@@ -77,7 +77,33 @@ namespace ClientSide.ViewModel
 
         #region Presentation Properties
 
+        public override string DisplayName
+        {
+            get
+            {
+                if (IsNewSubsciber) {
+                    return "register new subscriber";
+                }
+                return "edit subscriber " + _subscriber.Name;
+            }
+            protected set
+            {
+                
+            }
+        }
 
+        /// <summary>
+        /// Text for the save button below subscriber form
+        /// </summary>
+        public string SaveButtonText
+        {
+            get {
+                if (IsNewSubsciber) {
+                    return "Add";
+                }
+                return "Save";
+            }
+        }
 
         /// <summary>
         /// Gets/sets whether this customer is selected in the UI.
@@ -125,8 +151,8 @@ namespace ClientSide.ViewModel
             if (!_subscriber.IsValid)
                 throw new InvalidOperationException(Resources.SubscriberViewModel_Exception_CannotSave);
 
-            if (this.IsNewCustomer)
-                _subscriberService.AddSubscriber(_subscriber);
+            if (this.IsNewSubsciber)
+                _subscriberService.SaveSubscriber(_subscriber);
 
             base.OnPropertyChanged("DisplayName");
         }
@@ -136,16 +162,16 @@ namespace ClientSide.ViewModel
         #region Private Helpers
 
         /// <summary>
-        /// Returns true if this customer was created by the user and it has not yet
-        /// been saved to the customer repository.
+        /// Returns true if this subscriber was created by the user and it has not yet
+        /// been saved to the subscriber repository.
         /// </summary>
-        bool IsNewCustomer
+        bool IsNewSubsciber
         {
             get { return !_subscriberService.ContainsSubscriber(_subscriber); }
         }
 
         /// <summary>
-        /// Returns true if the customer is valid and can be saved.
+        /// Returns true if the subscriber is valid and can be saved.
         /// </summary>
         bool CanSave
         {

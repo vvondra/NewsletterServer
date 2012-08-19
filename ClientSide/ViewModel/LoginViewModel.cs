@@ -5,7 +5,7 @@ using System.Windows.Input;
 using System.ServiceModel;
 using System.ComponentModel;
 using MahApps.Metro.Controls;
-using ClientSide.Models;
+using ClientSide.Model;
 
 namespace ClientSide.ViewModel
 {
@@ -72,6 +72,8 @@ namespace ClientSide.ViewModel
         public LoginViewModel()
         {
             _credentials = new Credentials();
+
+            base.DisplayName = "Newsletter Composer - Log In";
            
         }
 

@@ -207,11 +207,20 @@
         QmCC
 </value>
   </data>
+  <data name="Compose_DisplayName" xml:space="preserve">
+    <value>compose</value>
+  </data>
+  <data name="LoginView_LoginButton" xml:space="preserve">
+    <value>Log in</value>
+  </data>
   <data name="MainWindowViewModel_DisplayName" xml:space="preserve">
     <value>Newsletter composer</value>
   </data>
   <data name="Subsciber_MissingName" xml:space="preserve">
     <value>The subscriber's name is missing.</value>
+  </data>
+  <data name="SubscriberList_DisplayName" xml:space="preserve">
+    <value>subscribers</value>
   </data>
   <data name="SubscriberViewModel_Exception_CannotSave" xml:space="preserve">
     <value>Cannot save subscriber.</value>

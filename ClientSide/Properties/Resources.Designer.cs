@@ -68,6 +68,24 @@ namespace ClientSide.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to compose.
+        /// </summary>
+        public static string Compose_DisplayName {
+            get {
+                return ResourceManager.GetString("Compose_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log in.
+        /// </summary>
+        public static string LoginView_LoginButton {
+            get {
+                return ResourceManager.GetString("LoginView_LoginButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Newsletter composer.
         /// </summary>
         public static string MainWindowViewModel_DisplayName {
@@ -109,6 +127,15 @@ namespace ClientSide.Properties {
         public static string Subscriber_MissingEmail {
             get {
                 return ResourceManager.GetString("Subscriber_MissingEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to subscribers.
+        /// </summary>
+        public static string SubscriberList_DisplayName {
+            get {
+                return ResourceManager.GetString("SubscriberList_DisplayName", resourceCulture);
             }
         }
         

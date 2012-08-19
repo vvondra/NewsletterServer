@@ -23,8 +23,10 @@ namespace ClientSide.ViewModel
         /// </summary>
         public string AuthKey { get; set; }
 
-        ReadOnlyCollection<CommandViewModel> _commands;
-        readonly SubscriberService _SubscriberService;
+        /// <summary>
+        /// Holds current view
+        /// </summary>
+        ViewModelBase _currentView;
 
         #endregion // Fields
 
@@ -34,54 +36,33 @@ namespace ClientSide.ViewModel
         {
             base.DisplayName = Resources.MainWindowViewModel_DisplayName;
 
-            _SubscriberService = new SubscriberService();
-
             ShowLoginDialog();
         }
 
         #endregion // Constructor
 
-        #region Commands
-
-        /// <summary>
-        /// Returns a read-only list of commands 
-        /// that the UI can display and execute.
-        /// </summary>
-        public ReadOnlyCollection<CommandViewModel> Commands
-        {
-            get
-            {
-                if (_commands == null) {
-                    List<CommandViewModel> cmds = this.CreateCommands();
-                    _commands = new ReadOnlyCollection<CommandViewModel>(cmds);
-                }
-                return _commands;
-            }
-        }
-
-        List<CommandViewModel> CreateCommands()
-        {
-            return new List<CommandViewModel>
-            {
-                /*new CommandViewModel(
-                    Resources.MainWindowViewModel_Command_CreateNewSubscriber,
-                    new RelayCommand(param => this.CreateNewSubscriber()))*/
-            };
-        }
-
-        #endregion // Commands
 
         /// <summary>
         /// Holds the currently active view in window
         /// </summary>
-        public ViewModelBase CurrentView { get; set; }
-
-
-        void CreateNewSubscriber()
+        public ViewModelBase CurrentView
         {
-            Subscriber newSubscriber = Subscriber.CreateNewSubscriber();
-            SubscriberViewModel workspace = new SubscriberViewModel(newSubscriber, _SubscriberService);
-            this.SetActiveView(workspace);
+            get
+            {
+                return _currentView;
+            }
+            set
+            {
+                _currentView = value;
+                base.OnPropertyChanged("CurrentView");
+            }
+        }
+
+
+        void ShowWorkspace()
+        {
+            var workspaceVm = new WorkspaceViewModel(AuthKey);
+            this.SetActiveView(workspaceVm);
         }
 
         /// <summary>
@@ -90,7 +71,13 @@ namespace ClientSide.ViewModel
         void ShowLoginDialog()
         {
             LoginViewModel loginVm = new LoginViewModel();
+
+            // Fetch authentication key from login
             loginVm.LoginSuccessful += this.GetAuthenticationKey;
+            
+            // When logged in, show the main workspace
+            loginVm.LoginSuccessful += (s, e) => ShowWorkspace();
+
             this.SetActiveView(loginVm);
         }
 
@@ -102,7 +89,6 @@ namespace ClientSide.ViewModel
         void GetAuthenticationKey(object sender, EventArgs args)
         {
             AuthKey = (args as LoginEventArgs).AuthKey;
-            _SubscriberService.AuthKey = AuthKey;
         }
 
         /// <summary>

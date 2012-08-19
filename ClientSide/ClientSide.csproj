@@ -76,14 +76,34 @@
     <Compile Include="Command\RelayCommand.cs" />
     <Compile Include="Model\SubscriberService.cs" />
     <Compile Include="UI\PasswordBoxAssistant.cs" />
-    <Compile Include="ViewModel\CommandViewModel.cs" />
+    <Compile Include="ViewModel\Workspace\CommandViewModel.cs" />
     <Compile Include="ViewModel\LoginEventArgs.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="Model\Credentials.cs" />
     <Compile Include="NewsletterServerProxy.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
-    <Compile Include="ViewModel\SubscriberViewModel.cs" />
+    <Compile Include="ViewModel\Workspace\ComposeViewModel.cs" />
+    <Compile Include="ViewModel\Workspace\SubscriberAddedEventArgs.cs" />
+    <Compile Include="ViewModel\Workspace\SubscriberListViewModel.cs" />
+    <Compile Include="ViewModel\Workspace\SubscriberViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="ViewModel\WorkspaceViewModel.cs" />
+    <Compile Include="View\ComposeView.xaml.cs">
+      <DependentUpon>ComposeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SubscriberListView.xaml.cs">
+      <DependentUpon>SubscriberListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SubscriberView.xaml.cs">
+      <DependentUpon>SubscriberView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WorkspaceView.xaml.cs">
+      <DependentUpon>WorkspaceView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="View\ComposeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -103,6 +123,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\SubscriberListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SubscriberView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\WorkspaceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Subscriber.cs" />
@@ -145,7 +177,12 @@
   <ItemGroup>
     <Resource Include="Resources\1341060779_e-mail2 .ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\SmithHtmlEditor\SmithHtmlEditor\SmithHtmlEditor.csproj">
+      <Project>{84BADDA1-AB3A-4064-B87E-178D7446901D}</Project>
+      <Name>SmithHtmlEditor</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

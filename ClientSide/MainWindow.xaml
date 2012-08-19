@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:vm="clr-namespace:ClientSide.ViewModel"
+        xmlns:vmw="clr-namespace:ClientSide.ViewModel.Workspace"
         xmlns:vw="clr-namespace:ClientSide.View"
         MinWidth="650" MinHeight="420"
         Title="{Binding Path=DisplayName}" Loaded="Window_Loaded" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DesignHeight="381" d:DesignWidth="754" SizeToContent="WidthAndHeight">
@@ -17,9 +18,25 @@
             </ResourceDictionary.MergedDictionaries>
 
             
-            <!-- Bind LoginViewModel to its view -->
+            <!-- Bind ViewModels to their respective views -->
             <DataTemplate DataType="{x:Type vm:LoginViewModel}">
                 <vw:LoginView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vm:WorkspaceViewModel}">
+                <vw:WorkspaceView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vmw:SubscriberListViewModel}">
+                <vw:SubscriberListView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vmw:ComposeViewModel}">
+                <vw:ComposeView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vmw:SubscriberViewModel}">
+                <vw:SubscriberView />
             </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
@@ -29,21 +46,6 @@
     />
     
     <!--
-    <Grid>
-        <TabControl SelectionChanged="MainMenu_SelectionChanged">
-            <TabItem x:Name="TabOverview" Header="overview">
-                The Cheese Tab
-            </TabItem>
-            <TabItem x:Name="TabCompose" Header="compose">
-            </TabItem>
-            <TabItem x:Name="TabSubscibers" Header="subscribers">
-                <DataGrid ItemsSource="{Binding Subscribers}">
-                </DataGrid>
-            </TabItem>
-            <TabItem x:Name="TabSettings" Header="settings">
-                The Mushrooms Tab
-            </TabItem>
-        </TabControl>
-    </Grid>
+    
     -->
 </Controls:MetroWindow>

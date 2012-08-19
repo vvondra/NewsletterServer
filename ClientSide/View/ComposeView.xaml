@@ -1,0 +1,27 @@
+﻿<UserControl
+    x:Class="ClientSide.View.ComposeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vw="clr-namespace:ClientSide.View"
+    xmlns:ff="clr-namespace:ClientSide.UI"
+    xmlns:ex="clr-namespace:Smith.WPF.HtmlEditor;assembly=Smith.WPF.HtmlEditor"
+    xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    HorizontalAlignment="Center"
+    VerticalAlignment="Center">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <StackPanel Margin="5">
+        <TextBox Controls:TextboxHelper.Watermark="Message subject" Margin="0,0,0,25"></TextBox>
+        <ex:HtmlEditor x:Name="Editor" />
+        <Button HorizontalAlignment="Right" Margin="0, 30, 0, 0" Content="Send" Height="23" x:Name="logInButton" Width="120" Command="{Binding Path=SendCommand}"></Button>
+    </StackPanel>
+</UserControl>
